@@ -6,27 +6,30 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/21 17:22:26 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:53:57 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 //#include "push_swap_utils.c"
 
-static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, int size);
-static void	get_extremes(t_list **stack_to, t_list **stack_from, int quantity, short flag);
-static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
-static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
-static void	push_last_chunk(t_list **stack_a, t_list **stack_b);
-static void	push_easiest(t_list **stack_from, t_list **stack_to);
-static void	move_item(t_list **stack_from, t_list **stack_to, t_list *node, short flag_ab);
-static void	move_to_top(t_list **stack, t_list *node, char ab);
-static void	handle_three(t_list **stack, char ab);
+static int		check_duplicates(int argc, char **argv);
+static void		map_add_front(t_map **map, t_map *new);
+static short	free_map(t_map **memo, int argc);
+static void		handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, int size);
+static void		get_extremes(t_list **stack_to, t_list **stack_from, int quantity, short flag);
+static void		divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
+static void		divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
+static void		push_last_chunk(t_list **stack_a, t_list **stack_b);
+static void		push_easiest(t_list **stack_from, t_list **stack_to);
+static void		move_item(t_list **stack_from, t_list **stack_to, t_list *node, short flag_ab);
+static void		move_to_top(t_list **stack, t_list *node, char ab);
+static void		handle_three(t_list **stack, char ab);
 static t_list	*get_easiest(t_list *stack_from);
 static t_list	*get_closest(t_list *stack, int n);
 static short	get_easiness(t_list *stack, t_list *node, short size);
 static short	get_distance(t_list *stack, t_list *node);
-static void	quicksort(int arr[], int low, int high);
+static void		quicksort(int arr[], int low, int high);
 
 // int	main(void)
 // {
@@ -41,7 +44,7 @@ int	main(int argc, char **argv)
 	int		i;
 	int		*sorted_arr;
 
-	if (argc < 1 || !argv || !(*argv))
+	if (argc < 1 || !argv || !(*argv) || !check_duplicates(argc, argv))
 		return (0);
 	else if (argc == 2 && ft_atoi(argv[1]) > ft_atoi(argv[2]))
 		write(1, "sa\n", 3);
@@ -66,7 +69,67 @@ int	main(int argc, char **argv)
 		ft_lstadd_front(stack_a, new_node);
 	}
 	handle_cases(stack_a, stack_b, sorted_arr, argc - 1);
+	f_lstclear(stack_a);
+	free(sorted_arr);
 	return (0);
+}
+
+static int	check_duplicates(int argc, char **argv)
+{
+	t_map	**memo;
+	int		i;
+	int		j;
+	t_map	*node;
+	t_map	*cell;
+
+	i = -1;
+	memo = malloc(argc - 1 * sizeof(t_map *));
+	if (!memo)
+		return (0);
+	while (++i < argc - 1)
+		memo[i] = NULL;
+	i = -1;
+	while (++i < argc - 1)
+	{
+		cell = memo[ft_atoi(argv[i]) % (argc - 1)];
+		j = -1;
+		while (++j < argc % 500)
+			cell = cell->next;
+		if (cell && cell->n)
+			return (free_map(memo, argc));
+		node = malloc(sizeof(t_map));
+		if (!node)
+			return (free_map(memo, argc));
+		node->n = 1;
+		node->next = NULL;
+		map_add_front(&memo[ft_atoi(argv[i]) % (argc - 1)], node);
+	}
+	return (1);
+}
+
+static void	map_add_front(t_map **map, t_map *new)
+{
+	new->next = *map;
+	*map = new;
+}
+
+static short free_map(t_map **memo, int argc)
+{
+	int 	i;
+	t_map	*cell;
+
+	i = -1;
+    while (++i < argc - 1)
+    {
+        while (memo[i])
+        {
+            cell = memo[i];
+            memo[i] = memo[i]->next;
+            free(cell);
+        }
+    }
+    free(memo);
+    return (0);
 }
 
 static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, int size)

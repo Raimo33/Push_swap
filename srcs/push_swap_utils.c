@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/21 15:52:32 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:28:32 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,3 +160,5 @@ static int	ft_isspace(const char c)
 		return (1);
 	return (0);
 }
+
+

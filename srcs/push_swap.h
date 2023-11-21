@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/21 16:31:40 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:54:20 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ typedef	struct s_list
 	short			easiness;
 	struct s_list	*next;
 }					t_list;
+
+typedef	struct s_map
+{
+	int				n;
+	struct s_map	*next;
+}					t_map;
 
 t_list	*f_lstnew(int n);
 void	ft_lstadd_front(t_list **lst, t_list *new);
