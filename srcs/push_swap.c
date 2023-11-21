@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/21 15:07:38 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:22:26 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, in
 static void	get_extremes(t_list **stack_to, t_list **stack_from, int quantity, short flag);
 static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
 static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
-static void	push_easiest(t_list **stack_from, t_list **stack_to, short flag_ab);
+static void	push_last_chunk(t_list **stack_a, t_list **stack_b);
+static void	push_easiest(t_list **stack_from, t_list **stack_to);
 static void	move_item(t_list **stack_from, t_list **stack_to, t_list *node, short flag_ab);
 static void	move_to_top(t_list **stack, t_list *node, char ab);
 static void	handle_three(t_list **stack, char ab);
@@ -29,7 +30,7 @@ static void	quicksort(int arr[], int low, int high);
 
 // int	main(void)
 // {
-//     main2(11, (char *[]){"./push_swap", "6", "9", "10", "3", "7", "5", "2", "1", "4", "8"});
+//     main2(101, (char *[]){"./push_swap", "85", "107", "33", "17", "66", "46", "39", "6", "80", "55", "78", "77", "69", "43", "36", "29", "41", "90", "108", "38", "81", "53", "27", "104", "1", "47", "42", "94", "71", "21", "70", "23", "64", "89", "30", "110", "10", "20", "15", "32", "28", "87", "60", "76", "74", "102", "83", "88", "49", "98", "40", "51", "61", "93", "106", "45", "11", "31", "73", "91", "13", "79", "72", "37", "26", "8", "48", "2", "50", "5", "56", "57", "44", "59", "54", "22", "58", "95", "63", "52", "7", "84", "92", "25", "34", "75", "86", "101", "103", "12", "100", "82", "16", "35", "96", "14", "18", "24", "19", "99", "4", "62", "109", "105", "9", "97", "65", "68", "3", "67"});
 // }
 
 int	main(int argc, char **argv)
@@ -59,7 +60,7 @@ int	main(int argc, char **argv)
 		sorted_arr[i - 1] = ft_atoi(argv[i]);
 	while (--i > 0) 
 	{
-		new_node = f_lstnew(sorted_arr[i - 1]); //RIEMPIO LA LISTA 1 DI TROPPO
+		new_node = f_lstnew(sorted_arr[i - 1]);
 		if (!new_node)
 			return (f_lstclear(stack_a));
 		ft_lstadd_front(stack_a, new_node);
@@ -88,7 +89,7 @@ static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, in
 		divide_into_chunks(stack_a, stack_b, sorted_arr, 4 * (2 - (size <= 100)));
 		handle_three(stack_a, 'a');
 		while (*stack_b)
-			push_easiest(stack_b, stack_a, -1);
+			push_easiest(stack_b, stack_a);
 	}
 }
 
@@ -127,7 +128,6 @@ static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_a
 	int		j;
 	int		key_nbr;
 	t_list	*node;
-	t_list	*max;
 	int		arr_len;
 
 	j = 0;
@@ -145,6 +145,14 @@ static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_a
 			node = *stack_a;
 		}
 	}
+	push_last_chunk(stack_a, stack_b);
+}
+
+static void	push_last_chunk(t_list **stack_a, t_list **stack_b)
+{
+	t_list	*max;
+	t_list	*node;
+
 	max = *stack_a;
 	node = *stack_a;
 	while(node)
@@ -155,36 +163,34 @@ static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_a
 	}
 	while((*stack_a)->next->next->next)
 	{
-		if (*stack_a != max)
-			push(stack_b, stack_a, 'b');
-		else
-			push(&(*stack_a)->next, stack_a,  'b');
+		if (*stack_a == max)
+			rotate(stack_a, 'a');
+		push(stack_b, stack_a, 'b');
 	}
 }
 
-static void	push_easiest(t_list **stack_from, t_list **stack_to, short flag_ab)
+static void	push_easiest(t_list **stack_from, t_list **stack_to)
 {
 	t_list	*tmp_from;
-	t_list	*tmp_to;
 	t_list	*closest_to;
 	t_list	*easiest;
 	short	size_to;
 	short	size_from;
 
 	tmp_from = *stack_from;
-	tmp_to = *stack_to;
 	size_to = lst_len(*stack_to);
 	size_from = lst_len(*stack_from);
 	while(tmp_from)
 	{
-		tmp_to = *stack_to;
-		closest_to = get_closest(tmp_to, tmp_from->n);
+		closest_to = get_closest(*stack_to, tmp_from->n);
 		tmp_from->easiness = get_easiness(*stack_to, closest_to, size_to) + get_easiness(*stack_from, tmp_from, size_from);
+		if (tmp_from->easiness <= 1)
+			break ;
 		tmp_from = tmp_from->next;
 	}
 	easiest = get_easiest(*stack_from);
 	move_to_top(stack_to, get_closest(*stack_to, easiest->n), 'a');
-	move_item(stack_from, stack_to, easiest, flag_ab);
+	move_item(stack_from, stack_to, easiest, -1);
 	//dopo combino le mosse rrr unendo ogni coppia di rra e rrb e ra rb che occorra prima del PUSH
 }
 
@@ -263,14 +269,22 @@ static t_list	*get_easiest(t_list *stack_from)
 
 static t_list	*get_closest(t_list *stack, int n)
 {
+	int		best_n;
 	t_list	*closest;
 
+	best_n = INT_MAX;
 	closest = stack;
 	while(stack)
 	{
-		if (n - stack->n <= 0 && (n - stack->n >= n - closest->n))
-			closest = stack;
+		if (n - stack->n < 0 && n - stack->n > n - best_n)
+			best_n = stack->n;
 		stack = stack->next;
+	}
+	while(closest)
+	{
+		if (closest->n == best_n)
+			break ;
+		closest = closest->next;
 	}
 	return (closest);
 }
