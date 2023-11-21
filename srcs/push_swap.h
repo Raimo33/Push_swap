@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/20 17:02:52 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/21 14:34:38 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # define FIRST(a) ((a)->n)
 # define SECOND(a) ((a)->next->n)
 # define THIRD(a) ((a)->next->next->n)
-# define ABS(value) (((value < 0) * -1 * value) + (value * (value >= 0)))
 
 typedef	struct s_list
 {

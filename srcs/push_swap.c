@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/20 17:09:34 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:07:38 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_a
 static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
 static void	push_easiest(t_list **stack_from, t_list **stack_to, short flag_ab);
 static void	move_item(t_list **stack_from, t_list **stack_to, t_list *node, short flag_ab);
-static void	move_to_top_or_bottom(t_list **stack, t_list *node, char ab, short to_bottom);
+static void	move_to_top(t_list **stack, t_list *node, char ab);
 static void	handle_three(t_list **stack, char ab);
 static t_list	*get_easiest(t_list *stack_from);
 static t_list	*get_closest(t_list *stack, int n);
@@ -29,7 +29,7 @@ static void	quicksort(int arr[], int low, int high);
 
 // int	main(void)
 // {
-//     main2(101, (char *[]){"./push_swap", "39", "80", "67", "31", "10", "42", "27", "2", "6", "19", "72", "68", "58", "22", "44", "88", "100", "89", "36", "66", "70", "34", "97", "71", "53", "78", "35", "8", "91", "76", "60", "81", "47", "86", "18", "29", "14", "45", "85", "57", "51", "54", "9", "74", "99", "96", "77", "40", "49", "55", "73", "12", "21", "25", "30", "13", "61", "83", "56", "65", "1", "84", "26", "64", "5", "7", "52", "79", "37", "24", "59", "98", "43", "75", "69", "4", "32", "87", "20", "11", "23", "3", "33", "48", "95", "15", "46", "17", "63", "62", "16", "92", "50", "38", "82", "94", "41", "93", "90", "28"});
+//     main2(11, (char *[]){"./push_swap", "6", "9", "10", "3", "7", "5", "2", "1", "4", "8"});
 // }
 
 int	main(int argc, char **argv)
@@ -127,6 +127,7 @@ static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_a
 	int		j;
 	int		key_nbr;
 	t_list	*node;
+	t_list	*max;
 	int		arr_len;
 
 	j = 0;
@@ -144,15 +145,27 @@ static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_a
 			node = *stack_a;
 		}
 	}
+	max = *stack_a;
+	node = *stack_a;
+	while(node)
+	{
+		if (node->n > max->n)
+			max = node;
+		node = node->next;
+	}
 	while((*stack_a)->next->next->next)
-		push(stack_b, stack_a, 'b');
+	{
+		if (*stack_a != max)
+			push(stack_b, stack_a, 'b');
+		else
+			push(&(*stack_a)->next, stack_a,  'b');
+	}
 }
 
 static void	push_easiest(t_list **stack_from, t_list **stack_to, short flag_ab)
 {
 	t_list	*tmp_from;
 	t_list	*tmp_to;
-	t_list	*min_to;
 	t_list	*closest_to;
 	t_list	*easiest;
 	short	size_to;
@@ -164,31 +177,15 @@ static void	push_easiest(t_list **stack_from, t_list **stack_to, short flag_ab)
 	size_from = lst_len(*stack_from);
 	while(tmp_from)
 	{
-		min_to = *stack_to;
 		tmp_to = *stack_to;
-		while(tmp_to)
-		{
-			if (tmp_to->n < min_to->n)
-				min_to = tmp_to;
-			tmp_to = tmp_to->next;
-		}
-		if (tmp_from->n < min_to->n)
-			tmp_from->easiness = get_easiness(*stack_to, min_to, size_to) + get_easiness(*stack_from, tmp_from, size_from);
-		else
-		{
-			tmp_to = *stack_to;
-			closest_to = get_closest(tmp_to, tmp_from->n);
-			tmp_from->easiness = get_easiness(*stack_to, closest_to, size_to) + get_easiness(*stack_from, tmp_from, size_from);
-		}
+		closest_to = get_closest(tmp_to, tmp_from->n);
+		tmp_from->easiness = get_easiness(*stack_to, closest_to, size_to) + get_easiness(*stack_from, tmp_from, size_from);
 		tmp_from = tmp_from->next;
 	}
 	easiest = get_easiest(*stack_from);
-	if (easiest->n < min_to->n)
-		move_to_top_or_bottom(stack_to, min_to, 'a', 1);
-	else
-		move_to_top_or_bottom(stack_to, get_closest(*stack_to, easiest->n), 'a', 0);
+	move_to_top(stack_to, get_closest(*stack_to, easiest->n), 'a');
 	move_item(stack_from, stack_to, easiest, flag_ab);
-	//dopo combino le mosse rrr unendo ogni coppia di rra e rrb che occorra prima del PUSH
+	//dopo combino le mosse rrr unendo ogni coppia di rra e rrb e ra rb che occorra prima del PUSH
 }
 
 static void	move_item(t_list **stack_from, t_list **stack_to, t_list *node, short flag_ab)
@@ -216,14 +213,8 @@ static void	move_item(t_list **stack_from, t_list **stack_to, t_list *node, shor
 	}
 }
 
-static void	move_to_top_or_bottom(t_list **stack, t_list *node, char ab, short to_bottom)
+static void	move_to_top(t_list **stack, t_list *node, char ab)
 {
-	t_list	*tmp;
-
-	if (to_bottom)
-		tmp = node->next;
-	else
-		tmp = node;
 	if (get_distance(*stack, node) < lst_len(*stack) / 2)
 	{
 		while (*stack != node)
@@ -273,14 +264,11 @@ static t_list	*get_easiest(t_list *stack_from)
 static t_list	*get_closest(t_list *stack, int n)
 {
 	t_list	*closest;
-	int		diff;
 
-	diff = 0;
 	closest = stack;
 	while(stack)
 	{
-		diff = n - closest->n;
-		if (n - stack->n >= 0 && (n - stack->n <= ABS(diff)))
+		if (n - stack->n <= 0 && (n - stack->n >= n - closest->n))
 			closest = stack;
 		stack = stack->next;
 	}
