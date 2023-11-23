@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/21 18:28:32 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/23 11:29:54 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,49 +56,49 @@ short	lst_len(t_list *lst)
 	return (len);
 }
 
-void	swap(t_list **head, char ab)
+void	swap(t_list **stack, char ab)
 {
 	t_list	*first;
 	t_list	*second;
 
-	if (head && *head && (*head)->next)
+	if (stack && *stack && (*stack)->next)
 	{
-		first = *head;
+		first = *stack;
 		second = first->next;
 		first->next = second->next;
 		second->next = first;
-		*head = second;
+		*stack = second;
 	}
 	write(1, "s", 1);
 	write(1, &ab, 1);
 	write(1, "\n", 1);
 }
-void	push(t_list **head_to, t_list **head_from, char ab)
+void	push(t_list **stack_from, t_list **stack_to, char ab)
 {
 	t_list	*tmp;
 
-	if (head_to && head_from && *head_from)
+	if (stack_to && stack_from && *stack_from)
 	{
-        tmp = *head_from;
-        *head_from = (*head_from)->next;
-        tmp->next = *head_to;
-        *head_to = tmp; 
+        tmp = *stack_from;
+        *stack_from = (*stack_from)->next;
+        tmp->next = *stack_to;
+        *stack_to = tmp; 
 	}
 	write(1, "p", 1);
 	write(1, &ab, 1);
 	write(1, "\n", 1);
 }
 
-void	rotate(t_list **head, char ab)
+void	rotate(t_list **stack, char ab)
 {
 	t_list	*first;
 	t_list	*tmp;
 
-	if (head && *head && (*head)->next)
+	if (stack && *stack && (*stack)->next)
 	{
-		first = *head;
-		*head = first->next;
-		tmp = *head;
+		first = *stack;
+		*stack = first->next;
+		tmp = *stack;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = first;
@@ -109,20 +109,20 @@ void	rotate(t_list **head, char ab)
 	write(1, "\n", 1);
 }
 
-void	rev_rotate(t_list **head, char ab)
+void	rev_rotate(t_list **stack, char ab)
 {
 	t_list	*last;
 	t_list	*tmp;
 
-	if (head && *head && (*head)->next)
+	if (stack && *stack && (*stack)->next)
 	{
-		tmp = *head;
+		tmp = *stack;
 		while (tmp->next->next)
 			tmp = tmp->next;
 		last = tmp->next;
-		last->next = *head;
+		last->next = *stack;
 		tmp->next = NULL;
-		*head = last;
+		*stack = last;
 	}
 	write(1, "rr", 2);
 	write(1, &ab, 1);
