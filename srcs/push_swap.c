@@ -194,11 +194,6 @@ static void	move_to_top(t_list **stack, t_list *node, char ab)
 		rev_rotate(stack, ab);
 }
 
-static	void adjust(t_list *stack)
-{
-	
-}
-
 static void	handle_three(t_list **stack, char ab)
 {
 	if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack) && FIRST(*stack) < THIRD(*stack)) //[2,1,3]
