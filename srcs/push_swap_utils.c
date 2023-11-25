@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/23 11:29:54 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:56:30 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ short	lst_len(t_list *lst)
 	return (len);
 }
 
-void	swap(t_list **stack, char ab)
+void	swap(t_list **stack, char ab, char **result)
 {
 	t_list	*first;
 	t_list	*second;
@@ -69,11 +69,13 @@ void	swap(t_list **stack, char ab)
 		second->next = first;
 		*stack = second;
 	}
-	write(1, "s", 1);
-	write(1, &ab, 1);
-	write(1, "\n", 1);
+	if (ab == 'a')
+		**result = 9;
+	else
+		**result = 10;
+	(*result)++;
 }
-void	push(t_list **stack_from, t_list **stack_to, char ab)
+void	push(t_list **stack_from, t_list **stack_to, char ab, char **result)
 {
 	t_list	*tmp;
 
@@ -84,12 +86,14 @@ void	push(t_list **stack_from, t_list **stack_to, char ab)
         tmp->next = *stack_to;
         *stack_to = tmp; 
 	}
-	write(1, "p", 1);
-	write(1, &ab, 1);
-	write(1, "\n", 1);
+	if (ab == 'a')
+		**result = 7;
+	else
+		**result = 8;
+	(*result)++;
 }
 
-void	rotate(t_list **stack, char ab)
+void	rotate(t_list **stack, char ab, char **result)
 {
 	t_list	*first;
 	t_list	*tmp;
@@ -104,12 +108,14 @@ void	rotate(t_list **stack, char ab)
 		tmp->next = first;
 		first->next = NULL;
 	}
-	write(1, "r", 1);
-	write(1, &ab, 1);
-	write(1, "\n", 1);
+	if (ab == 'a')
+		**result = 1;
+	else
+		**result = 2;
+	(*result)++;
 }
 
-void	rev_rotate(t_list **stack, char ab)
+void	rev_rotate(t_list **stack, char ab, char **result)
 {
 	t_list	*last;
 	t_list	*tmp;
@@ -124,9 +130,11 @@ void	rev_rotate(t_list **stack, char ab)
 		tmp->next = NULL;
 		*stack = last;
 	}
-	write(1, "rr", 2);
-	write(1, &ab, 1);
-	write(1, "\n", 1);
+	if (ab == 'a')
+		**result = 4;
+	else
+		**result = 5;
+	(*result)++;
 }
 
 int	ft_atoi(const char *nptr)
@@ -161,4 +169,23 @@ static int	ft_isspace(const char c)
 	return (0);
 }
 
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*arr;
 
+	if (nmemb != 0 && size > ULONG_MAX / nmemb)
+		return (NULL);
+	arr = (void *)malloc(size * nmemb);
+	if (arr == NULL)
+		return (NULL);
+	while (size-- > 0)
+		((char *)arr)[size] = '\0';
+	((char *)arr)[0] = '\0';
+	return (arr);
+}
+
+void	ft_putstr(char *s)
+{
+	while (*s != '\0')
+		write(1, s++, 1);
+}

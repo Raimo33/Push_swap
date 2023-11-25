@@ -6,28 +6,33 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/23 12:36:24 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:24:25 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 //#include "push_swap_utils.c"
 
+static void		merge_moves(char **result);
 static char		check_duplicates(int *sorted_arr, short size);
-static void		handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, short size);
-static void		divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks);
-static void		push_last_chunk(t_list **stack_a, t_list **stack_b);
-static void		push_easiest(t_list **stack_from, t_list **stack_to);
-static void		move_to_top(t_list **stack, t_list *node, char ab);
-static void		handle_three(t_list **stack, char ab);
+static void		handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, short size, char **result);
+static char		is_sorted(t_list *stack, int *sorted_arr);
+static void		divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks, char **result);
+static void		push_easiest(t_list **stack_from, t_list **stack_to,  char **result);
+static void		reset_stack(t_list *stack);
+static void		move_to_top(t_list **stack, t_list *node, char ab, char **result);
+static void		handle_three(t_list **stack, char ab, char **result);
 static t_list	*get_easiest(t_list *stack_from);
 static t_list	*get_closest(t_list *stack, int n);
 static short	get_distance(t_list *stack, t_list *node);
 static void		quicksort(int arr[], int low, int high);
 
+// int	main2(int argc, char **argv);
+
 // int	main(void)
 // {
-//     main2(101, (char *[]){"./push_swap", "85", "107", "85", "17", "66", "46", "39", "6", "80", "55", "78", "77", "69", "43", "36", "29", "41", "90", "108", "38", "81", "53", "27", "104", "1", "47", "42", "94", "71", "21", "70", "23", "64", "89", "30", "110", "10", "20", "15", "32", "28", "87", "60", "76", "74", "102", "83", "88", "49", "98", "40", "51", "61", "93", "106", "45", "11", "31", "73", "91", "13", "79", "72", "37", "26", "8", "48", "2", "50", "5", "56", "57", "44", "59", "54", "22", "58", "95", "63", "52", "7", "84", "92", "25", "34", "75", "86", "101", "103", "12", "100", "82", "16", "35", "96", "14", "18", "24", "19", "99", "4", "62", "109", "105", "9", "97", "65", "68", "3", "67"});
+//     main2(13, (char *[]){"./push_swap", "1", "74", "70", "91", "60", "59", "39", "41", "95", "79",
+// 										"68", "84"});
 // }
 
 int	main(int argc, char **argv)
@@ -35,9 +40,13 @@ int	main(int argc, char **argv)
 	t_list	**stack_a;
 	t_list	**stack_b;
 	t_list	*new_node;
+	char	*result;
 	int		i;
 	int		*sorted_arr;
 
+	result = ft_calloc(20000, sizeof(char));
+	if (!result++)
+		return (0);
 	if (argc < 3 || !argv || !(*argv))
 		return (0);
 	sorted_arr = malloc(sizeof(int) * (argc - 1));
@@ -62,10 +71,56 @@ int	main(int argc, char **argv)
 	}
 	quicksort(sorted_arr, 0, argc - 2);
 	if (check_duplicates(sorted_arr, argc - 1))
-		handle_cases(stack_a, stack_b, sorted_arr, argc - 1);
+		handle_cases(stack_a, stack_b, sorted_arr, argc - 1, &result);
+	merge_moves(&result);
 	f_lstclear(stack_a);
 	free(sorted_arr);
 	return (0);
+}
+
+static void	merge_moves(char **result)
+{
+	char	*start;
+	char	*end;
+	short	i;
+	int		move_counts[5] = {0, 0, 0, 0, 0}; //ra, rb, NULL, rra, rrb
+	char 	*moves[10] = {"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n", "pa\n", "pb\n", "sa\n", "sb\n"};
+
+	while (*(*result - 1) != 0)
+		(*result)--;
+	start = *result;
+	end = *result;
+	while (*end != 0)
+	{
+		while (*end < 6 && *end != 0)
+			end++;
+		while (start != end)
+			move_counts[*start++ - 1] += 1;
+		i = 0;
+		while(i < 5)
+		{
+			while (move_counts[i] > 0 && move_counts[i + 1] > 0)
+			{
+				ft_putstr(moves[i + 2]);
+				move_counts[i]--;
+				move_counts[i + 1]--;
+			}
+			while(move_counts[i] > 0)
+			{
+				ft_putstr(moves[i]);
+				move_counts[i]--;
+			}
+			while(move_counts[i + 1] > 0)
+			{
+				ft_putstr(moves[i + 1]);
+				move_counts[i + 1]--;
+			}
+			i += 3;
+		}
+		ft_putstr(moves[*end - 1]);
+		start = ++end;
+	}
+	free(*result - 1);
 }
 
 static char	check_duplicates(int *sorted_arr, short size)
@@ -81,147 +136,152 @@ static char	check_duplicates(int *sorted_arr, short size)
 	return (1);
 }
 
-static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, short size)
+static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, short size, char **result)
 {
 	int		i;
 	t_list	*min;
+	char	sorted;
 
 	i = -1;
 	if (size == 2 && (*stack_a)->n > (*stack_a)->next->n)
 		write(1, "sa\n", 3);
 	else if (size == 3)
-		handle_three(stack_a, 'a');
+		handle_three(stack_a, 'a', result);
 	else
 	{
-		if (size < 10)
-			divide_into_chunks(stack_a, stack_b, sorted_arr, 2);
-		else
-			divide_into_chunks(stack_a, stack_b, sorted_arr, 4 * (2 - (size <= 100)));
-		handle_three(stack_a, 'a');
-		while (*stack_b)
-			push_easiest(stack_b, stack_a);
+		sorted = is_sorted(*stack_a, sorted_arr);
+		if (sorted == 1)
+			return ;
+		if (sorted == 0)
+		{
+			if (size < 10)
+				divide_into_chunks(stack_a, stack_b, sorted_arr, 2, result);
+			else
+				divide_into_chunks(stack_a, stack_b, sorted_arr, 4 * (2 - (size <= 100)), result);
+			handle_three(stack_a, 'a', result);
+			while (*stack_b)
+				push_easiest(stack_b, stack_a, result);
+		}
 		min = *stack_a;
 		while (min && min->n != sorted_arr[0])
 			min = min->next;
-		move_to_top(stack_a, min, 'a');
+		move_to_top(stack_a, min, 'a', result);
 	}
 }
 
-static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks)
+static char	is_sorted(t_list *stack, int *sorted_arr)
+{
+	short	i;
+	short	arr_len;
+	t_list	*tmp;
+
+	i = -1;
+	arr_len = lst_len(stack);
+	tmp = stack;
+	while (tmp && tmp->n == sorted_arr[++i])
+		tmp = tmp->next;
+	if (!tmp)
+		return (1);
+	while (sorted_arr[i] != tmp->n)
+		i++;
+	while (sorted_arr[++i - 1] == tmp->n)
+	{
+		if (i >= arr_len)
+			i = 0;
+		tmp = tmp->next;
+		if (!tmp)
+			return (-1);
+	}
+	return (0);
+}
+
+static void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks, char **result)
 {
 	int		i;
 	int		j;
 	int		key_nbr;
+	int		key_nbr2;
 	t_list	*node;
 	int		arr_len;
 
-	j = 0;
+	j = 1;
 	arr_len = lst_len(*stack_a);
 	node = *stack_a;
-	while (++j <= n_chunks - 1)
+	while (j <= n_chunks - 1)
 	{
 		key_nbr = sorted_arr[(arr_len / n_chunks) * j - 1];
+		key_nbr2 = sorted_arr[(arr_len / n_chunks) * (j + 1) - 1];
+		if (j == n_chunks - 1)
+			key_nbr2 = sorted_arr[arr_len - 2];
 		i = -1;
-		while (++i < (arr_len / n_chunks) && node)
+		while (++i < (arr_len / n_chunks * 2) && (*stack_a)->next->next->next)
 		{
-			while (node && node->n > key_nbr)
+			while (node && node->n > key_nbr2)
 				node = node->next;
-			move_to_top(stack_a, node, 'a');
-			push(stack_a, stack_b, 'b');
+			move_to_top(stack_a, node, 'a', result);
+			push(stack_a, stack_b, 'b', result);
+			if (node->n <= key_nbr)
+				rotate(stack_b, 'b', result);
 			node = *stack_a;
 		}
-	}
-	push_last_chunk(stack_a, stack_b);
-}
-
-static void	push_last_chunk(t_list **stack_a, t_list **stack_b)
-{
-	t_list	*max;
-	t_list	*node;
-
-	max = *stack_a;
-	node = *stack_a;
-	while(node)
-	{
-		if (node->n > max->n)
-			max = node;
-		node = node->next;
-	}
-	while((*stack_a)->next->next->next)
-	{
-		if (*stack_a == max)
-			rotate(stack_a, 'a');
-		push(stack_a, stack_b, 'b');
+		j += 2;
 	}
 }
 
-static void	push_easiest(t_list **stack_from, t_list **stack_to)
+static void	push_easiest(t_list **stack_from, t_list **stack_to,  char **result)
 {
 	t_list	*tmp_from;
 	t_list	*closest_to;
 	t_list	*easiest;
-	short	size_to;
-	short	size_from;
 
 	tmp_from = *stack_from;
-	size_to = lst_len(*stack_to);
-	size_from = lst_len(*stack_from);
 	while(tmp_from)
 	{
 		closest_to = get_closest(*stack_to, tmp_from->n);
-		tmp_from->easiness = ABS((size_to * (get_distance(*stack_to, closest_to) > size_to / 2) - get_distance(*stack_to, closest_to)));
-		tmp_from->easiness += ABS((size_from * (get_distance(*stack_from, tmp_from) > size_from / 2) - get_distance(*stack_from, tmp_from)));
-		if (tmp_from->easiness <= 1)
-			break ;
+		tmp_from->easiness = ABS(get_distance(*stack_to, closest_to)) + ABS((get_distance(*stack_from, tmp_from)));
 		tmp_from = tmp_from->next;
 	}
 	easiest = get_easiest(*stack_from);
-	move_to_top(stack_to, get_closest(*stack_to, easiest->n), 'a');
-	move_to_top(stack_from, easiest, 'b');
-	push(stack_from, stack_to, 'a');
-	//dopo combino le mosse rrr unendo ogni coppia di rra e rrb e ra rb che occorra prima del PUSH
+	move_to_top(stack_to, get_closest(*stack_to, easiest->n), 'a', result);
+	move_to_top(stack_from, easiest, 'b', result);
+	push(stack_from, stack_to, 'a', result);
 }
 
-static void	move_to_top(t_list **stack, t_list *node, char ab)
+static void	move_to_top(t_list **stack, t_list *node, char ab, char **result)
 {
-	if (get_distance(*stack, node) < lst_len(*stack) / 2)
+	if (get_distance(*stack, node) > 0)
 	{
 		while (*stack != node)
-			rotate(stack, ab);
+			rotate(stack, ab, result);
 		return ;
 	}
 	while(*stack != node)
-		rev_rotate(stack, ab);
+		rev_rotate(stack, ab, result);
 }
 
-static	void adjust(t_list *stack)
-{
-	
-}
-
-static void	handle_three(t_list **stack, char ab)
+static void	handle_three(t_list **stack, char ab, char **result)
 {
 	if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack) && FIRST(*stack) < THIRD(*stack)) //[2,1,3]
-		swap(stack, ab);
+		swap(stack, ab, result);
 	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) > THIRD(*stack)) //[3,2,1]
 	{
-		swap(stack, ab);
-		rev_rotate(stack, ab);
+		swap(stack, ab, result);
+		rev_rotate(stack, ab, result);
 	}
 	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack)) //[3,1,2]
-		rotate(stack, ab);
+		rotate(stack, ab, result);
 	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack) && FIRST(*stack) < THIRD(*stack)) //[1,3,2]
 	{
-		swap(stack, ab);
-		rotate(stack, ab);
+		swap(stack, ab, result);
+		rotate(stack, ab, result);
 	}
 	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack)) //[2,3,1]
-		rev_rotate(stack, ab);
+		rev_rotate(stack, ab, result);
 }
 
 static t_list	*get_easiest(t_list *stack_from)
 {
-	t_list *easiest;
+	t_list	*easiest;
 
 	easiest = stack_from;
 	while (stack_from)
@@ -258,13 +318,17 @@ static t_list	*get_closest(t_list *stack, int n)
 static short	get_distance(t_list *stack, t_list *node)
 {
 	int dist;
+	int	len;
 
+	len = lst_len(stack);
 	dist = 0;
 	while (stack != node)
 	{
 		dist++;
 		stack = stack->next;
 	}
+	if (dist > len / 2)
+		dist = -(len - dist);
 	return(dist);
 }
 
@@ -298,3 +362,4 @@ static void	quicksort(int arr[], int low, int high)
         quicksort(arr, i + 1, high);
     }
 }
+
