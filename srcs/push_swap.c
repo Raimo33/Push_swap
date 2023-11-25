@@ -259,7 +259,11 @@ static void	move_to_top(t_list **stack, t_list *node, char ab, char **result)
 		rev_rotate(stack, ab, result);
 }
 
+<<<<<<< HEAD
 static void	handle_three(t_list **stack, char ab, char **result)
+=======
+static void	handle_three(t_list **stack, char ab)
+>>>>>>> 525a7046ced4cfa6d5e0df47e085ef5412275f79
 {
 	if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack) && FIRST(*stack) < THIRD(*stack)) //[2,1,3]
 		swap(stack, ab, result);
