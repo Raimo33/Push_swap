@@ -31,6 +31,7 @@ static char	is_sorted(t_list *stack, int *sorted_arr);
 
 int	main(int argc, char **argv)
 {
+	char	buffer[20000];
 	t_list	**stack_a;
 	t_list	**stack_b;
 	int		*sorted_arr;
@@ -38,7 +39,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 3 || !argv || !(*argv))
 		return (0);
-	result = ft_calloc(20000, sizeof(char));
+	result = &buffer;
 	sorted_arr = malloc(sizeof(int) * (argc - 1));
 	stack_a = malloc(sizeof(t_list *));
 	stack_b = malloc(sizeof(t_list *));
