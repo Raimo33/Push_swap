@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/25 21:39:00 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:05:31 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ static t_list	*get_easiest(t_list *stack_from);
 static t_list	*get_closest(t_list *stack, int n);
 static short	get_distance(t_list *stack, t_list *node);
 static void		quicksort(int arr[], int low, int high);
-static char		init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
+static void		init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
 static void		show_moves(int move_counts[], char *moves[]);
 
 // int	main2(int argc, char **argv);
 
 // int	main(void)
 // {
-//     main2(13, (char *[]){"./push_swap", "1", "74", "70", "91", "60", "59", "39", "41", "95", "79",
-// 										"68", "84"});
+//     main2(103, (char *[]){"./push_swap", "10", "98", "66", "40", "56", "94", "81", "42", "99", "8", "34", "54", "100", "36", "22", "24", "65", "37", "2", "64", "38", "80", "49", "83", "51", "45", "7", "55", "72", "85", "23", "92", "82", "68", "88", "89", "43", "50", "6", "73", "70", "14", "29", "32", "35", "30", "41", "59", "33", "25", "76", "84", "12", "58", "77", "60", "20", "63", "19", "91", "74", "78", "31", "1", "15", "87", "62", "48", "47", "18", "69", "27", "11", "75", "44", "3", "46", "28", "26", "39", "97", "79", "61", "96", "16", "52", "57", "95", "21", "86", "17", "4", "67", "53", "90", "5", "13", "93", "71", "9", "1100", "1102"});
 // }
 
 int	main(int argc, char **argv)
@@ -44,7 +43,7 @@ int	main(int argc, char **argv)
 	char	*result;
 
 	if (argc < 3 || !argv || !(*argv))
-		return (0);
+		error(1);
 	result = ft_calloc(20000, sizeof(char));
 	sorted_arr = malloc(sizeof(int) * (argc - 1));
 	stack_a = malloc(sizeof(t_list *));
@@ -55,17 +54,17 @@ int	main(int argc, char **argv)
 		free(stack_b);
 		free(sorted_arr);
 		free(result - 1);
-		return (0);
+		error(2);
 	}
-	if (init(argc, &sorted_arr, argv, stack_a) && check_duplicates(sorted_arr, argc - 1))
+	init(argc, &sorted_arr, argv, stack_a);
+	if (check_duplicates(sorted_arr, argc - 1))
 		handle_cases(stack_a, stack_b, sorted_arr, argc - 1, &result);
 	merge_moves(&result);
 	f_lstclear(stack_a);
 	free(sorted_arr);
-	return (0);
 }
 
-static char	init(int argc, int **sorted_arr, char **argv, t_list **stack_a)
+static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a)
 {
 	int	i;
 	t_list	*new_node;
@@ -77,11 +76,10 @@ static char	init(int argc, int **sorted_arr, char **argv, t_list **stack_a)
 	{
 		new_node = f_lstnew((*sorted_arr)[i - 1]);
 		if (!new_node)
-			return (0);
+			error(2);
 		ft_lstadd_front(stack_a, new_node);
 	}
 	quicksort((*sorted_arr), 0, argc - 2);
-	return (1);
 }
 
 static void	merge_moves(char **result)
@@ -138,12 +136,9 @@ static void	show_moves(int move_counts[], char *moves[])
 
 static char	check_duplicates(int *sorted_arr, short size)
 {
-	int i;
-
-	i = -1;
-	while (++i < size - 1)
+	while (--size > 0)
 	{
-		if (sorted_arr[i] == sorted_arr[i + 1])
+		if (sorted_arr[size - 1] == sorted_arr[size])
 			return (0);
 	}
 	return (1);
@@ -288,7 +283,7 @@ static t_list	*get_easiest(t_list *stack_from)
 	t_list	*easiest;
 
 	easiest = stack_from;
-	while (stack_from)
+	while (stack_from && easiest->easiness > 1)
 	{
 		if (stack_from->easiness < easiest->easiness)
 			easiest = stack_from;
@@ -303,18 +298,15 @@ static t_list	*get_closest(t_list *stack, int n)
 	t_list	*closest;
 
 	best_n = INT_MAX;
-	closest = stack;
+	closest = NULL;
 	while(stack)
 	{
 		if (n - stack->n < 0 && n - stack->n > n - best_n)
+		{
 			best_n = stack->n;
+			closest = stack;
+		}
 		stack = stack->next;
-	}
-	while(closest)
-	{
-		if (closest->n == best_n)
-			break ;
-		closest = closest->next;
 	}
 	return (closest);
 }
@@ -326,13 +318,10 @@ static short	get_distance(t_list *stack, t_list *node)
 
 	len = lst_len(stack);
 	dist = 0;
-	while (stack != node)
-	{
-		dist++;
+	while (stack != node && ++dist)
 		stack = stack->next;
-	}
 	if (dist > len / 2)
-		dist = -(len - dist);
+		return ((len - dist) * -1);
 	return(dist);
 }
 
@@ -347,17 +336,15 @@ static void	quicksort(int arr[], int low, int high)
 	{
         pivot = arr[high];
         i = low;
-        j = low;
-        while (j < high) 
+        j = low - 1;
+        while (++j < high) 
 		{
             if (arr[j] < pivot) 
 			{
-                int temp = arr[i];
-                arr[i] = arr[j];
+                temp = arr[i];
+                arr[i++] = arr[j];
                 arr[j] = temp;
-                i++;
             }
-            j++;
         }
         temp = arr[i];
         arr[i] = arr[high];
