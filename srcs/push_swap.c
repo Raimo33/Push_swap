@@ -55,8 +55,8 @@ int	main(int argc, char **argv)
 
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a)
 {
-	int		i;
 	t_list	*new_node;
+	int		i;
 
 	i = 0;
 	while (++i < argc)
@@ -84,9 +84,9 @@ static char	check_duplicates(int *sorted_arr, short size)
 static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, short size, char **result)
 {
 	t_list	*min;
+	int		key_nbr;
 	short	i;
 	short	j;
-	int		key_nbr;
 
 	if (size == 2 && (*stack_a)->n > (*stack_a)->next->n)
 		write(1, "sa\n", 3);
@@ -118,9 +118,9 @@ static void	handle_cases(t_list **stack_a, t_list **stack_b, int *sorted_arr, sh
 
 static char	is_sorted(t_list *stack, int *sorted_arr)
 {
+	t_list	*tmp;
 	short	i;
 	short	arr_len;
-	t_list	*tmp;
 
 	i = -1;
 	arr_len = lst_len(stack);
