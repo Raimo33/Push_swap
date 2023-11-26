@@ -36,7 +36,6 @@ void	merge_moves(char **result)
 			ft_putstr(moves[*end - 1]);
 		start = ++end;
 	}
-	free(*result - 1);
 }
 
 static void	show_moves(int move_counts[], char *moves[])
