@@ -14,11 +14,11 @@
 
 void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks, char **result)
 {
+	t_list	*node;
 	int		i;
 	int		j;
 	int		key_nbr;
 	int		key_nbr2;
-	t_list	*node;
 	int		arr_len;
 
 	j = 1;
