@@ -16,10 +16,10 @@ static void	show_moves(int move_counts[], char *moves[]);
 
 void	merge_moves(char **result)
 {
+	char	*moves[10] = {"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n", "pa\n", "pb\n", "sa\n", "sb\n"};
+	int		move_counts[5] = {0, 0, 0, 0, 0}; //ra, rb, NULL, rra, rrb
 	char	*start;
 	char	*end;
-	int		move_counts[5] = {0, 0, 0, 0, 0}; //ra, rb, NULL, rra, rrb
-	char	*moves[10] = {"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n", "pa\n", "pb\n", "sa\n", "sb\n"};
 
 	while (*(*result - 1) != 0)
 		(*result)--;
