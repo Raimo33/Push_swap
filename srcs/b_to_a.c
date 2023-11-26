@@ -63,8 +63,8 @@ static t_list	*get_easiest(t_list *stack_from)
 
 static t_list	*get_closest(t_list *stack, int n)
 {
-	int		best_n;
 	t_list	*closest;
+	int		best_n;
 
 	best_n = INT_MAX;
 	closest = NULL;
