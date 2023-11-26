@@ -43,13 +43,7 @@ int	main(int argc, char **argv)
 	stack_a = malloc(sizeof(t_list *));
 	stack_b = malloc(sizeof(t_list *));
 	if (!result++ || !stack_a || !stack_b || !sorted_arr)
-	{
-		free(stack_a);
-		free(stack_b);
-		free(sorted_arr);
-		free(result - 1);
 		error(2);
-	}
 	init(argc, &sorted_arr, argv, stack_a);
 	if (check_duplicates(sorted_arr, argc - 1))
 		handle_cases(stack_a, stack_b, sorted_arr, argc - 1, &result);
