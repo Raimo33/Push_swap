@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:21:54 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/27 17:38:38 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:22:13 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, sho
 		}
 		j += 2;
 	}
+	//mettere un push_last_chunk che lo divide in 2
 	while((*stack_a)->next->next->next)
 	{
 		if ((*stack_a)->n >= sorted_arr[arr_len - 1])
