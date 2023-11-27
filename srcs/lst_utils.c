@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:13:32 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/26 15:09:50 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:24:18 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_list	*f_lstnew(int n)
 	if (new_node == NULL)
 		return (NULL);
 	new_node->n = n;
+	new_node->dist = 0;
 	new_node->easiness = SHRT_MAX;
 	new_node->next = NULL;
 	return (new_node);

@@ -1,2 +1,3 @@
-./srcs/a.out
-./srcs/r
+srcs/a.out
+srcs/r
+srcs/.vscode/

@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:14:39 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/26 15:09:29 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:10:08 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,7 @@ void	rotate(t_list **stack, char ab, char **result)
 		tmp->next = first;
 		first->next = NULL;
 	}
-	if (ab == 'a')
-		**result = 1;
-	else
-		**result = 2;
-	(*result)++;
+	*(*result)++ = 1 * (ab == 'a') + 2 * (ab == 'b');
 }
 
 void	rev_rotate(t_list **stack, char ab, char **result)
@@ -49,11 +45,7 @@ void	rev_rotate(t_list **stack, char ab, char **result)
 		tmp->next = NULL;
 		*stack = last;
 	}
-	if (ab == 'a')
-		**result = 4;
-	else
-		**result = 5;
-	(*result)++;
+	*(*result)++ = 4 * (ab == 'a') + 5 * (ab == 'b');
 }
 
 void	push(t_list **stack_from, t_list **stack_to, char ab, char **result)
@@ -67,11 +59,7 @@ void	push(t_list **stack_from, t_list **stack_to, char ab, char **result)
         tmp->next = *stack_to;
         *stack_to = tmp; 
 	}
-	if (ab == 'a')
-		**result = 7;
-	else
-		**result = 8;
-	(*result)++;
+	*(*result)++ = 7 * (ab == 'a') + 8 * (ab == 'b');
 }
 
 void	swap(t_list **stack, char ab, char **result)
@@ -87,11 +75,7 @@ void	swap(t_list **stack, char ab, char **result)
 		second->next = first;
 		*stack = second;
 	}
-	if (ab == 'a')
-		**result = 9;
-	else
-		**result = 10;
-	(*result)++;
+	*(*result)++ = 9 * (ab == 'a') + 10 * (ab == 'b');
 }
 
 void	move_to_top(t_list **stack, t_list *node, char ab, char **result)

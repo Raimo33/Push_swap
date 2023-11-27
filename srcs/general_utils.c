@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/26 15:08:41 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:30:11 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	error(char id)
 
 int	ft_atoi(const char *nptr)
 {
-	int	n;
-	int	sign;
+	int		n;
+	char	sign;
 
 	n = 0;
 	sign = 1;

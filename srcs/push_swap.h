@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/26 18:14:38 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:23:35 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@
 # define N_CHUNKS(n) (((n >= 500) * 8 + (n >= 100 && n < 500) * 4 + (n < 100) * 2))
 # define HIGHEST(n1, n2) ((n1 > n2) * n1 + (n1 < n2) * n2)
 
+# ifndef N_MOVES
+#  define N_MOVES 20000
+# endif
+
 typedef struct	s_list
 {
 	int				n;
+	short			dist;
 	short			easiness;
 	struct s_list	*next;
 }						t_list;

@@ -6,13 +6,13 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:22:03 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/26 18:14:33 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:41:56 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_list	*get_easiest(t_list *stack_from);
+static void		reset_distances(t_list *stack);
 static t_list	*get_closest(t_list *stack, int n);
 
 void	push_easiest(t_list **stack_from, t_list **stack_to, int key_nbr, char **result)
@@ -22,19 +22,24 @@ void	push_easiest(t_list **stack_from, t_list **stack_to, int key_nbr, char **re
 	t_list	*easiest;
 
 	tmp_from = *stack_from;
+	easiest = NULL;
 	while (tmp_from)
 	{
 		closest_to = get_closest(*stack_to, tmp_from->n);
-		//////////O(n^3) perche' get distance cicla la lista, while(tmp_from) cicla la lista, e push_easiest e' ciclato nella lista
-		tmp_from->easiness = ABS(get_distance(*stack_to, closest_to)) + ABS((get_distance(*stack_from, tmp_from)));
-		if (tmp_from->n < key_nbr)
-			tmp_from->easiness = SHRT_MAX;
+		tmp_from->easiness = tmp_from->dist + closest_to->dist;
+		if (tmp_from->n >= key_nbr && (!easiest || tmp_from->easiness < easiest->easiness))
+			easiest = tmp_from;
+		if (easiest && easiest->easiness <= 1)
+			break ; 
 		tmp_from = tmp_from->next;
 	}
-	easiest = get_easiest(*stack_from);
+	if (!easiest)
+		return ;
 	move_to_top(stack_to, get_closest(*stack_to, easiest->n), 'a', result);
 	move_to_top(stack_from, easiest, 'b', result);
 	push(stack_from, stack_to, 'a', result);
+	reset_distances(*stack_from);
+	reset_distances(*stack_to);
 }
 
 void	adjust(t_list **stack_a, int *sorted_arr, char **result)
@@ -47,34 +52,34 @@ void	adjust(t_list **stack_a, int *sorted_arr, char **result)
 	move_to_top(stack_a, min, 'a', result);
 }
 
-static t_list	*get_easiest(t_list *stack_from)
+static void	reset_distances(t_list *stack)
 {
-	t_list	*easiest;
+	short	size;
+	short	i;
 
-	easiest = stack_from;
-	while (stack_from && easiest->easiness > 1)
+	i = 0;
+	size = lst_len(stack);
+	while (stack && i < size / 2)
 	{
-		if (stack_from->easiness < easiest->easiness)
-			easiest = stack_from;
-		stack_from = stack_from->next;
+		stack->dist = i++;
+		stack = stack->next;
 	}
-	return (easiest);
+	while (stack && i > 0)
+	{
+		stack->dist = i--;
+		stack = stack->next;
+	}
 }
 
 static t_list	*get_closest(t_list *stack, int n)
 {
 	t_list	*closest;
-	int		best_n;
 
-	best_n = INT_MAX;
 	closest = NULL;
 	while (stack)
 	{
-		if (n - stack->n < 0 && n - stack->n > n - best_n)
-		{
-			best_n = stack->n;
+		if (n - stack->n < 0 && (!closest || n - stack->n > n - closest->n))
 			closest = stack;
-		}
 		stack = stack->next;
 	}
 	return (closest);
