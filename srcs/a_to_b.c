@@ -29,7 +29,7 @@ void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result, unsigne
 
 	j = 1;
 	n_chunks = N_CHUNKS(size);
-    reset_distances(*(stacks.sa));
+	reset_distances(*(stacks.sa));
 	while (j <= n_chunks - 1)
 	{
 		keynbrs.n1 = sorted_arr[(size / n_chunks) * j - 1];
@@ -40,7 +40,7 @@ void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result, unsigne
 		push_two_chunks(stacks, keynbrs, size, result);
 		j += 2;
 	}
-	while((*(stacks.sa))->next->next->next)
+	while ((*(stacks.sa))->next->next->next)
 	{
 		if ((*(stacks.sa))->n >= sorted_arr[size - 1])
 			rotate(stacks.sa, 'a', result);
@@ -71,21 +71,20 @@ static void	push_two_chunks(t_stacks stacks, t_keynbrs keynbrs, unsigned short s
 
 void	handle_three(t_list **stack, char ab, char **result)
 {
-	if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack) && FIRST(*stack) < THIRD(*stack)) //[2,1,3]
+	if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack) && FIRST(*stack) < THIRD(*stack))
 		swap(stack, ab, result);
-	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) > THIRD(*stack)) //[3,2,1]
+	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) > THIRD(*stack))
 	{
 		swap(stack, ab, result);
 		rev_rotate(stack, ab, result);
 	}
-	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack)) //[3,1,2]
+	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack))
 		rotate(stack, ab, result);
-	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack) && FIRST(*stack) < THIRD(*stack)) //[1,3,2]
+	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack) && FIRST(*stack) < THIRD(*stack))
 	{
 		swap(stack, ab, result);
 		rotate(stack, ab, result);
 	}
-	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack)) //[2,3,1]
+	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack))
 		rev_rotate(stack, ab, result);
 }
-

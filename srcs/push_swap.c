@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/29 15:36:33 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:40:50 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	main(int argc, char **argv)
 		handle_cases(stacks, sorted_arr, &result, argc - 1);
 	merge_moves(&result);
 	f_lstclear(stacks.sa);
-	//f_lstclear(stacks.sb);
 	free(sorted_arr);
 }
 

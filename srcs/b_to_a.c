@@ -20,7 +20,6 @@ void	push_easiest(t_stacks stacks, char **result)
 	t_list	*easiest;
 
 	reset_distances(*(stacks.sb));
-	reset_distances(*(stacks.sa)); //forse inutile
 	tmp_from = *(stacks.sb);
 	easiest = NULL;
 	while (tmp_from)
@@ -30,7 +29,7 @@ void	push_easiest(t_stacks stacks, char **result)
 		if (!easiest || tmp_from->easiness < easiest->easiness)
 			easiest = tmp_from;
 		if (easiest->easiness <= 1)
-			break ; 
+			break ;
 		tmp_from = tmp_from->next;
 	}
 	move_to_top(stacks.sb, easiest, 'b', result);
