@@ -6,49 +6,66 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:21:54 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/27 19:22:13 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:22:43 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks, char **result)
+typedef struct s_keynbrs
 {
-	t_list	*node;
-	int		i;
-	int		j;
-	int		key_nbr;
-	int		key_nbr2;
-	int		arr_len;
+	int	n1;
+	int	n2;
+}				t_keynbrs;
+
+static void	push_two_chunks(t_stacks stacks, t_keynbrs keynbrs, unsigned short size, char **result);
+
+void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result, unsigned short size)
+{
+	t_list				*node;
+	t_keynbrs			keynbrs;
+	unsigned char		j;
+	unsigned char		n_chunks;
 
 	j = 1;
-	arr_len = lst_len(*stack_a);
-	node = *stack_a;
+	n_chunks = N_CHUNKS(size);
+    reset_distances(*(stacks.sa));
 	while (j <= n_chunks - 1)
 	{
-		key_nbr = sorted_arr[(arr_len / n_chunks) * j - 1];
-		key_nbr2 = sorted_arr[(arr_len / n_chunks) * (j + 1) - 1];
+		keynbrs.n1 = sorted_arr[(size / n_chunks) * j - 1];
 		if (j == n_chunks - 1)
-			key_nbr2 = sorted_arr[arr_len - 2];
-		i = -1;
-		while (++i < (arr_len / n_chunks * 2) && (*stack_a)->next->next->next)
-		{
-			while (node && node->n > key_nbr2)
-				node = node->next;
-			move_to_top(stack_a, node, 'a', result);
-			push(stack_a, stack_b, 'b', result);
-			if (node->n <= key_nbr)
-				rotate(stack_b, 'b', result);
-			node = *stack_a;
-		}
+			keynbrs.n2 = sorted_arr[size - 2];
+		else
+			keynbrs.n2 = sorted_arr[(size / n_chunks) * (j + 1) - 1];
+		push_two_chunks(stacks, keynbrs, size, result);
 		j += 2;
 	}
-	//mettere un push_last_chunk che lo divide in 2
-	while((*stack_a)->next->next->next)
+	while((*(stacks.sa))->next->next->next)
 	{
-		if ((*stack_a)->n >= sorted_arr[arr_len - 1])
-			rotate(stack_a, 'a', result);
-		push(stack_a, stack_b, 'b', result);
+		if ((*(stacks.sa))->n >= sorted_arr[size - 1])
+			rotate(stacks.sa, 'a', result);
+		push(stacks.sa, stacks.sb, 'b', result);
+	}
+}
+
+static void	push_two_chunks(t_stacks stacks, t_keynbrs keynbrs, unsigned short size, char **result)
+{
+	short			i;
+	unsigned char	n_chunks;
+	t_list			*node;
+
+	node = *(stacks.sa);
+	n_chunks = N_CHUNKS(size);
+	i = -1;
+	while (++i < ((size / n_chunks) * 2) && (*(stacks.sa))->next->next->next)
+	{
+		while (node && node->n > keynbrs.n2)
+			node = node->next;
+		move_to_top(stacks.sa, node, 'a', result);
+		push(stacks.sa, stacks.sb, 'b', result);
+		if (node->n <= keynbrs.n1)
+			rotate(stacks.sb, 'b', result);
+		node = *(stacks.sa);
 	}
 }
 

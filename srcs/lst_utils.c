@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:13:32 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/27 19:19:35 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:20:10 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_list	*f_lstnew(int n)
 	t_list	*new_node;
 
 	new_node = malloc(sizeof(t_list));
-	if (new_node == NULL)
+	if (!new_node)
 		return (NULL);
 	new_node->n = n;
 	new_node->dist = 0;
@@ -32,20 +32,19 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 	*lst = new;
 }
 
-int	f_lstclear(t_list **lst)
+void	f_lstclear(t_list **lst)
 {
-	if (*lst == NULL || lst == NULL)
-		return (0);
+	if (!(*lst) || !lst)
+		return ;
 	if ((*lst)->next != NULL)
 		f_lstclear(&(*lst)->next);
 	free(*lst);
 	*lst = NULL;
-	return (0);
 }
 
 short	lst_len(t_list *lst)
 {
-	int	len;
+	int		len;
 
 	len = 0;
 	while (lst)
@@ -56,16 +55,21 @@ short	lst_len(t_list *lst)
 	return (len);
 }
 
-short	get_distance(t_list *stack, t_list *node)
+void	reset_distances(t_list *stack)
 {
-	int dist;
-	int	len;
+	short	size;
+	short	i;
 
-	len = lst_len(stack);
-	dist = 0;
-	while (stack != node && ++dist)
+	i = 0;
+	size = lst_len(stack);
+	while (stack && i < size / 2)
+	{
+		stack->dist = i++;
 		stack = stack->next;
-	if (dist > len / 2)
-		return ((len - dist) * -1);
-	return(dist);
+	}
+	while (stack && i > 0)
+	{
+		stack->dist = -(i--);
+		stack = stack->next;
+	}
 }

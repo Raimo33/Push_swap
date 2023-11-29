@@ -6,26 +6,11 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/27 17:30:11 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:17:52 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*arr;
-
-	if (nmemb != 0 && size > ULONG_MAX / nmemb)
-		return (NULL);
-	arr = (void *)malloc(size * nmemb);
-	if (arr == NULL)
-		return (NULL);
-	while (size-- > 0)
-		((char *)arr)[size] = '\0';
-	((char *)arr)[0] = '\0';
-	return (arr);
-}
 
 void	ft_putstr(char *s)
 {
@@ -39,9 +24,9 @@ void	error(char id)
 	exit(id);
 }
 
-int	ft_atoi(const char *nptr)
+long	f_atol(char *nptr)
 {
-	int		n;
+	long	n;
 	char	sign;
 
 	n = 0;
@@ -55,12 +40,16 @@ int	ft_atoi(const char *nptr)
 	}
 	else if (*nptr == '+')
 		nptr++;
+	if (*nptr > '9' || *nptr < '0')
+		error(2);
 	while (*nptr <= '9' && *nptr >= '0')
 	{
 		n *= 10;
 		n += (*nptr - 48);
 		nptr++;
 	}
+	if (n * sign > INT_MAX || n * sign < INT_MIN)
+		error(2);
 	return (n * sign);
 }
 

@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:14:39 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/27 17:10:08 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:15:32 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ void	rotate(t_list **stack, char ab, char **result)
 			tmp = tmp->next;
 		tmp->next = first;
 		first->next = NULL;
+    	*(*result)++ = 1 * (ab == 'a') + 2 * (ab == 'b');
 	}
-	*(*result)++ = 1 * (ab == 'a') + 2 * (ab == 'b');
+    else
+        swap(stack, ab, result);
 }
 
-void	rev_rotate(t_list **stack, char ab, char **result)
+void rev_rotate(t_list **stack, char ab, char **result)
 {
 	t_list	*last;
 	t_list	*tmp;
@@ -44,11 +46,13 @@ void	rev_rotate(t_list **stack, char ab, char **result)
 		last->next = *stack;
 		tmp->next = NULL;
 		*stack = last;
+        *(*result)++ = 4 * (ab == 'a') + 5 * (ab == 'b');
 	}
-	*(*result)++ = 4 * (ab == 'a') + 5 * (ab == 'b');
+    else
+        swap(stack, ab, result);
 }
 
-void	push(t_list **stack_from, t_list **stack_to, char ab, char **result)
+void push(t_list **stack_from, t_list **stack_to, char ab, char **result)
 {
 	t_list	*tmp;
 
@@ -57,12 +61,13 @@ void	push(t_list **stack_from, t_list **stack_to, char ab, char **result)
         tmp = *stack_from;
         *stack_from = (*stack_from)->next;
         tmp->next = *stack_to;
-        *stack_to = tmp; 
+        *stack_to = tmp;
+        *(*result)++ = 7 * (ab == 'a') + 8 * (ab == 'b');
 	}
-	*(*result)++ = 7 * (ab == 'a') + 8 * (ab == 'b');
 }
 
-void	swap(t_list **stack, char ab, char **result)
+
+void swap(t_list **stack, char ab, char **result)
 {
 	t_list	*first;
 	t_list	*second;
@@ -74,18 +79,17 @@ void	swap(t_list **stack, char ab, char **result)
 		first->next = second->next;
 		second->next = first;
 		*stack = second;
+        *(*result)++ = 9 * (ab == 'a') + 10 * (ab == 'b');
 	}
-	*(*result)++ = 9 * (ab == 'a') + 10 * (ab == 'b');
 }
 
 void	move_to_top(t_list **stack, t_list *node, char ab, char **result)
 {
-	if (get_distance(*stack, node) > 0)
-	{
+	if (node->dist > 0)
 		while (*stack != node)
-			rotate(stack, ab, result);
-		return ;
-	}
-	while(*stack != node)
-		rev_rotate(stack, ab, result);
+			 rotate(stack, ab, result);
+	else
+		while (*stack != node)
+			rev_rotate(stack, ab, result);
+    reset_distances(*stack);
 }

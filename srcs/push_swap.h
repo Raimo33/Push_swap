@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/27 17:23:35 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:04:32 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define THIRD(a) ((a)->next->next->n)
 # define ABS(value) (((value < 0) * -1 * value) + (value * (value >= 0)))
 # define N_CHUNKS(n) (((n >= 500) * 8 + (n >= 100 && n < 500) * 4 + (n < 100) * 2))
-# define HIGHEST(n1, n2) ((n1 > n2) * n1 + (n1 < n2) * n2)
 
 # ifndef N_MOVES
 #  define N_MOVES 20000
@@ -33,12 +32,19 @@ typedef struct	s_list
 	int				n;
 	short			dist;
 	short			easiness;
+	struct s_list	*brother;
 	struct s_list	*next;
 }						t_list;
 
-void	divide_into_chunks(t_list **stack_a, t_list **stack_b, int *sorted_arr, short n_chunks, char **result);
+typedef struct s_stacks
+{
+	t_list	**sa;
+	t_list	**sb;
+}				t_stacks;
+
+void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result, unsigned short size);
 void	handle_three(t_list **stack, char ab, char **result);
-void	push_easiest(t_list **stack_from, t_list **stack_to, int key_nbr, char **result);
+void	push_easiest(t_stacks stacks, char **result);
 void	adjust(t_list **stack_a, int *sorted_arr, char **result);
 void	merge_moves(char **result);
 void	rotate(t_list **stack, char ab, char **result);
@@ -48,13 +54,13 @@ void	swap(t_list **stack, char ab, char **result);
 void	move_to_top(t_list **stack, t_list *node, char ab, char **result);
 t_list	*f_lstnew(int n);
 void	ft_lstadd_front(t_list **lst, t_list *new);
-int		f_lstclear(t_list **lst);
+void	f_lstclear(t_list **lst);
 short	lst_len(t_list *lst);
-short	get_distance(t_list *stack, t_list *node);
+void	reset_distances(t_list *stack);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_putstr(char *s);
 void	error(char id);
-int		ft_atoi(const char *nptr);
+long	f_atol(char *nptr);
 void	quicksort(int arr[], int low, int high);
 
 #endif
