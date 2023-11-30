@@ -1,3 +1,5 @@
 srcs/a.out
-srcs/r
+srcs/mandatory/r
 srcs/.vscode/
+srcs/bonus/a.out
+srcs/madnatory/a.out
