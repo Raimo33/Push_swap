@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/29 15:40:50 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/30 16:53:51 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,42 +18,76 @@
 // #include "lst_utils.c"
 // #include "display.c"
 // #include "stack_operations.c"
+// #include "macros.c"
 // int	main2(int argc, char **argv);
 
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
 static char	check_duplicates(int *sorted_arr, short size);
-static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result, unsigned short size);
-static char	is_sorted(t_list *stack, int *sorted_arr);
+static void	free_everything(char id, t_stacks stacks, int *sorted_arr,
+				char *result);
+static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
+				unsigned short size);
 
 // int main(void)
 // {
-//     char *numbers[] = {"./push_swap", "354", "369", "39", "491", "390", "190", "66", "343", "21", "2147483647", "-2147483648", "348", "85", "200", "372"};
-//     main2(16, numbers);
+//     char *numbers[] = {"./push_swap", "1", "0"};
+//     main2(3, numbers);
 // }
 
 int	main(int argc, char **argv)
 {
-	char		buffer[N_MOVES];
 	t_stacks	stacks;
 	int			*sorted_arr;
 	char		*result;
 
-	if (argc < 3 || !argv || !(*argv))
+	if (argc < 3)
+	{
+		f_atol(argv[1]);
 		return (0);
-	result = buffer;
+	}
+	result = ft_calloc(N_MOVES, sizeof(char));
 	sorted_arr = malloc(sizeof(int) * (argc - 1));
 	stacks.sa = malloc(sizeof(t_list *));
 	stacks.sb = malloc(sizeof(t_list *));
 	*(stacks.sa) = 0;
 	*(stacks.sb) = 0;
 	if (!result++ || !stacks.sa || !stacks.sb || !sorted_arr)
-		error(1);
+		free_everything(1, stacks, sorted_arr, result - 1);
 	init(argc, &sorted_arr, argv, stacks.sa);
 	if (check_duplicates(sorted_arr, argc - 1))
 		handle_cases(stacks, sorted_arr, &result, argc - 1);
 	merge_moves(&result);
 	f_lstclear(stacks.sa);
-	free(sorted_arr);
+	free_everything(0, stacks, sorted_arr, result - 1);
+}
+
+static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
+unsigned short size)
+{
+	int	first;
+	int	second;
+	int	third;
+
+	first = (*(stacks.sa))->n;
+	second = (*(stacks.sa))->next->n;
+	if (size == 2 && first > second)
+		write(1, "sa\n", 3);
+	else if (size == 3)
+		handle_three(stacks.sa, 'a', result);
+	else
+	{
+		third = (*(stacks.sa))->next->next->n;
+		if (is_sorted(*(stacks.sa), sorted_arr) == 0)
+		{
+			if (first < second && third < second)
+				swap(stacks.sa, 'a', result);
+			divide_into_chunks(stacks, sorted_arr, result, size);
+			handle_three(stacks.sa, 'a', result);
+			while (*(stacks.sb))
+				push_easiest(stacks, result);
+		}
+		adjust(stacks.sa, sorted_arr, result);
+	}
 }
 
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a)
@@ -82,49 +116,13 @@ static char	check_duplicates(int *sorted_arr, short size)
 	return (1);
 }
 
-static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result, unsigned short size)
+static void	free_everything(char id, t_stacks stacks, int *sorted_arr,
+	char *result)
 {
-	t_list	*min;
-
-	if (size == 2 && (*(stacks.sa))->n > (*(stacks.sa))->next->n)
-		write(1, "sa\n", 3);
-	else if (size == 3)
-		handle_three(stacks.sa, 'a', result);
-	else
-	{
-		if (is_sorted(*(stacks.sa), sorted_arr) == 0)
-		{
-			divide_into_chunks(stacks, sorted_arr, result, size);
-			handle_three(stacks.sa, 'a', result);
-			while (*(stacks.sb))
-				push_easiest(stacks, result);
-		}
-		adjust(stacks.sa, sorted_arr, result);
-	}
-}
-
-static char	is_sorted(t_list *stack, int *sorted_arr)
-{
-	t_list	*tmp;
-	short	i;
-	short	arr_len;
-
-	i = -1;
-	arr_len = lst_len(stack);
-	tmp = stack;
-	while (tmp && tmp->n == sorted_arr[++i])
-		tmp = tmp->next;
-	if (!tmp)
-		return (1);
-	while (sorted_arr[i] != tmp->n)
-		i++;
-	while (sorted_arr[++i - 1] == tmp->n)
-	{
-		if (i >= arr_len)
-			i = 0;
-		tmp = tmp->next;
-		if (!tmp)
-			return (-1);
-	}
-	return (0);
+	free(stacks.sa);
+	free(stacks.sb);
+	free(sorted_arr);
+	free(result);
+	if (id != 0)
+		error(id);
 }

@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:13:32 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/29 12:20:10 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:16:00 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	f_lstclear(t_list **lst)
 {
 	if (!(*lst) || !lst)
 		return ;
-	if ((*lst)->next != NULL)
+	if ((*lst)->next)
 		f_lstclear(&(*lst)->next);
 	free(*lst);
 	*lst = NULL;

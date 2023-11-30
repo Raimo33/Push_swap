@@ -10,3 +10,4 @@
 #                                                                              #
 # **************************************************************************** #
 
+//nel bonus compilare prima checker_bonus.h che gnl.h cosi' che definisco prima il BUFFER_SIZE

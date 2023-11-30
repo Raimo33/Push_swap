@@ -6,29 +6,50 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:21:54 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/29 15:22:43 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:18:07 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-typedef struct s_keynbrs
-{
-	int	n1;
-	int	n2;
-}				t_keynbrs;
+static void	push_two_chunks(t_stacks stacks, struct s_keynbrs keynbrs,
+				unsigned short size, char **result);
 
-static void	push_two_chunks(t_stacks stacks, t_keynbrs keynbrs, unsigned short size, char **result);
-
-void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result, unsigned short size)
+char	is_sorted(t_list *stack, int *sorted_arr)
 {
-	t_list				*node;
-	t_keynbrs			keynbrs;
+	t_list	*tmp;
+	short	i;
+	short	arr_len;
+
+	i = -1;
+	arr_len = lst_len(stack);
+	tmp = stack;
+	while (tmp && tmp->n == sorted_arr[++i])
+		tmp = tmp->next;
+	if (!tmp)
+		return (1);
+	while (sorted_arr[i] != tmp->n)
+		i++;
+	while (sorted_arr[++i - 1] == tmp->n)
+	{
+		if (i >= arr_len)
+			i = 0;
+		tmp = tmp->next;
+		if (!tmp)
+			return (-1);
+	}
+	return (0);
+}
+
+void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result,
+unsigned short size)
+{
+	struct s_keynbrs	keynbrs;
 	unsigned char		j;
 	unsigned char		n_chunks;
 
 	j = 1;
-	n_chunks = N_CHUNKS(size);
+	n_chunks = get_n_chunks(size);
 	reset_distances(*(stacks.sa));
 	while (j <= n_chunks - 1)
 	{
@@ -48,14 +69,15 @@ void	divide_into_chunks(t_stacks stacks, int *sorted_arr, char **result, unsigne
 	}
 }
 
-static void	push_two_chunks(t_stacks stacks, t_keynbrs keynbrs, unsigned short size, char **result)
+static void	push_two_chunks(t_stacks stacks, struct s_keynbrs keynbrs,
+unsigned short size, char **result)
 {
 	short			i;
 	unsigned char	n_chunks;
 	t_list			*node;
 
 	node = *(stacks.sa);
-	n_chunks = N_CHUNKS(size);
+	n_chunks = get_n_chunks(size);
 	i = -1;
 	while (++i < ((size / n_chunks) * 2) && (*(stacks.sa))->next->next->next)
 	{
@@ -71,20 +93,27 @@ static void	push_two_chunks(t_stacks stacks, t_keynbrs keynbrs, unsigned short s
 
 void	handle_three(t_list **stack, char ab, char **result)
 {
-	if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack) && FIRST(*stack) < THIRD(*stack))
+	int	first;
+	int	second;
+	int	third;
+
+	first = (*stack)->n;
+	second = (*stack)->next->n;
+	third = (*stack)->next->next->n;
+	if (first > second && second < third && first < third)
 		swap(stack, ab, result);
-	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) > THIRD(*stack))
+	else if (first > second && second > third)
 	{
 		swap(stack, ab, result);
 		rev_rotate(stack, ab, result);
 	}
-	else if (FIRST(*stack) > SECOND(*stack) && SECOND(*stack) < THIRD(*stack))
+	else if (first > second && second < third)
 		rotate(stack, ab, result);
-	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack) && FIRST(*stack) < THIRD(*stack))
+	else if (first < second && second > third && first < third)
 	{
 		swap(stack, ab, result);
 		rotate(stack, ab, result);
 	}
-	else if (FIRST(*stack) < SECOND(*stack) && SECOND(*stack) > THIRD(*stack))
+	else if (first < second && second > third)
 		rev_rotate(stack, ab, result);
 }

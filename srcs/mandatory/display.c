@@ -6,21 +6,23 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:17:47 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/26 15:53:00 by craimond         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:44:49 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	show_moves(int move_counts[], char *moves[]);
+static void	show_moves(short move_counts[], char *moves[]);
+static void	init(char *moves[], short move_counts[]);
 
 void	merge_moves(char **result)
 {
-	char	*moves[10] = {"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n", "pa\n", "pb\n", "sa\n", "sb\n"};
-	int		move_counts[5] = {0, 0, 0, 0, 0}; //ra, rb, NULL, rra, rrb
+	char	*moves[10];
+	short	move_counts[5];
 	char	*start;
 	char	*end;
 
+	init(moves, move_counts);
 	while (*(*result - 1) != 0)
 		(*result)--;
 	start = *result;
@@ -38,9 +40,9 @@ void	merge_moves(char **result)
 	}
 }
 
-static void	show_moves(int move_counts[], char *moves[])
+static void	show_moves(short move_counts[], char *moves[])
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 5)
@@ -63,4 +65,23 @@ static void	show_moves(int move_counts[], char *moves[])
 		}
 		i += 3;
 	}
+}
+
+static void	init(char *moves[], short move_counts[])
+{
+	unsigned char	i;
+
+	moves[0] = "ra\n";
+	moves[1] = "rb\n";
+	moves[2] = "rr\n";
+	moves[3] = "rra\n";
+	moves[4] = "rrb\n";
+	moves[5] = "rrr\n";
+	moves[6] = "pa\n";
+	moves[7] = "pb\n";
+	moves[8] = "sa\n";
+	moves[9] = "sb\n";
+	i = 0;
+	while (i < 5)
+		move_counts[(int)i++] = 0;
 }
