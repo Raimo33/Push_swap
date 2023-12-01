@@ -73,7 +73,7 @@ static void	make_moves(t_stacks stacks)
 
 static void	check_sorting(t_list *stack_a)
 {
-	while (stack_a)
+	while (stack_a->next)
 	{
 		if (stack_a->n > stack_a->next->n)
 			write(1, "KO\n", 3);
