@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:31:23 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/30 18:34:57 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:46:56 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdint.h>
 
 # ifndef BUFFFER_SIZE
-# 	define BUFFER_SIZE 4
+#  define BUFFER_SIZE 4
 # endif
 
 # include "get_next_line/get_next_line.h"
@@ -44,7 +44,7 @@ char	push(t_list **stack_from, t_list **stack_to);
 char	swap(t_list **stack);
 void	quicksort(int arr[], int low, int high);
 void	free_everything(char id, t_stacks stacks, int *sorted_arr);
-char	f_strcmp(char *s1, char *s2);
+char	scmp(char *s1, char *s2);
 long	f_atol(char *nptr);
 void	error(char id);
 t_list	*f_lstnew(int n);

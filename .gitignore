@@ -2,4 +2,6 @@ srcs/a.out
 srcs/mandatory/r
 srcs/.vscode/
 srcs/bonus/a.out
-srcs/madnatory/a.out
+srcs/mandatory/a.out
+push_swap
+checker

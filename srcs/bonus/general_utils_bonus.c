@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:57:21 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/30 18:33:54 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:53:59 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ void	free_everything(char id, t_stacks stacks, int *sorted_arr)
 		error(id);
 }
 
-char	f_strcmp(char *s1, char *s2)
+char	scmp(char *s1, char *s2)
 {
 	while (*s1 && (*s1 == *s2))
 	{
 		s1++;
 		s2++;
 	}
-	return (*s1 - *s2);
+	if (*s1 == *s2)
+		return (1);
+	return (0);
 }
 
 long	f_atol(char *nptr)

@@ -42,7 +42,8 @@ int	main(int argc, char **argv)
 
 	if (argc < 3)
 	{
-		f_atol(argv[1]);
+		if (argv[1])
+			f_atol(argv[1]);
 		return (0);
 	}
 	result = ft_calloc(N_MOVES, sizeof(char));

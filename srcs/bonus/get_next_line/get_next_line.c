@@ -6,31 +6,11 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 22:27:08 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/05 10:18:22 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:07:27 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-// #include "get_next_line_utils.c"
-// # define BUFFER_SIZE 10
-
-// #include <stdio.h>
-// #include <fcntl.h>
-
-// int main(void)
-// {
-//     int fd = open("1char.txt", O_RDONLY);
-// 	char *line = "start";
-
-// 	for (int i = 0; i < 6; i++)
-// 	{
-// 		line = get_next_line(fd);
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-//     return 0;
-// }
 
 char	*get_next_line(int fd)
 {
