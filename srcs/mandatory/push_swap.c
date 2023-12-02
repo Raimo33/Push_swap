@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 15:20:04 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:45:02 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ unsigned short size)
 			divide_into_chunks(stacks, sorted_arr, result, size);
 			handle_three(stacks.sa, 'a', result);
 			while (*stacks.sb)
-				push_cheapest(stacks, sorted_arr[size - 1], result);
+				push_cheapest(stacks, result);
 		}
 		adjust(stacks.sa, sorted_arr, result);
 	}

@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:22:03 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 15:20:23 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:45:10 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_list	*get_brother(t_list *stack, int n);
 
-void	push_cheapest(t_stacks stacks, int max, char **result)
+void	push_cheapest(t_stacks stacks, char **result)
 {
 	t_list	*tmp_from;
 	t_list	*cheapest;
@@ -25,7 +25,7 @@ void	push_cheapest(t_stacks stacks, int max, char **result)
 	while (tmp_from)
 	{
 		tmp_from->brother = get_brother(*stacks.sa, tmp_from->n);
-		tmp_from->cost = abs(tmp_from->dist) + abs(tmp_from->brother->dist) + (max - tmp_from->n);
+		tmp_from->cost = abs(tmp_from->dist) + abs(tmp_from->brother->dist);
 		if (!cheapest || tmp_from->cost < cheapest->cost)
 			cheapest = tmp_from;
 		if (cheapest->cost <= 1)

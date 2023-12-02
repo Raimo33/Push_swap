@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 15:21:15 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:45:17 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char			is_sorted(t_list *stack, int *sorted_arr);
 void			divide_into_chunks(t_stacks stacks, int *sorted_arr,
 					char **result, unsigned short size);
 void			handle_three(t_list **stack, char ab, char **result);
-void			push_cheapest(t_stacks stacks, int max, char **result);
+void			push_cheapest(t_stacks stacks, char **result);
 void			adjust(t_list **stack_a, int *sorted_arr, char **result);
 void			merge_moves(char **result);
 void			rotate(t_list **stack, char ab, char **result);
