@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:13:32 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 14:21:49 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:21:04 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,17 @@ void	reset_distances(t_list *stack)
 {
 	short	size;
 	short	i;
-	short	half;
 
 	i = 0;
 	size = lst_len(stack);
-	half = size / 2 + size % 2;
-	while (stack && i < half)
+	while (stack && i < size / 2)
 	{
 		stack->dist = i++;
 		stack = stack->next;
 	}
-	i += size % 2;
-	while (stack && --i > 0)
+	while (stack && i > 0)
 	{
-		stack->dist = -i;
+		stack->dist = -(i--);
 		stack = stack->next;
 	}
 }
