@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:21:54 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/30 13:18:07 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 11:02:10 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ unsigned short size)
 
 	j = 1;
 	n_chunks = get_n_chunks(size);
-	reset_distances(*(stacks.sa));
+	reset_distances(*stacks.sa);
 	while (j <= n_chunks - 1)
 	{
 		keynbrs.n1 = sorted_arr[(size / n_chunks) * j - 1];
@@ -61,9 +61,9 @@ unsigned short size)
 		push_two_chunks(stacks, keynbrs, size, result);
 		j += 2;
 	}
-	while ((*(stacks.sa))->next->next->next)
+	while ((*stacks.sa)->next->next->next)
 	{
-		if ((*(stacks.sa))->n >= sorted_arr[size - 1])
+		if ((*stacks.sa)->n >= sorted_arr[size - 1])
 			rotate(stacks.sa, 'a', result);
 		push(stacks.sa, stacks.sb, 'b', result);
 	}
@@ -76,10 +76,10 @@ unsigned short size, char **result)
 	unsigned char	n_chunks;
 	t_list			*node;
 
-	node = *(stacks.sa);
+	node = *stacks.sa;
 	n_chunks = get_n_chunks(size);
 	i = -1;
-	while (++i < ((size / n_chunks) * 2) && (*(stacks.sa))->next->next->next)
+	while (++i < ((size / n_chunks) * 2) && (*stacks.sa)->next->next->next)
 	{
 		while (node && node->n > keynbrs.n2)
 			node = node->next;

@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:22:03 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/30 13:10:53 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:20:23 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 static t_list	*get_brother(t_list *stack, int n);
 
-void	push_easiest(t_stacks stacks, char **result)
+void	push_cheapest(t_stacks stacks, int max, char **result)
 {
 	t_list	*tmp_from;
-	t_list	*easiest;
+	t_list	*cheapest;
 
-	reset_distances(*(stacks.sb));
-	tmp_from = *(stacks.sb);
-	easiest = NULL;
+	reset_distances(*stacks.sb);
+	tmp_from = *stacks.sb;
+	cheapest = NULL;
 	while (tmp_from)
 	{
-		tmp_from->brother = get_brother(*(stacks.sa), tmp_from->n);
-		tmp_from->easiness = abs(tmp_from->dist) + abs(tmp_from->brother->dist);
-		if (!easiest || tmp_from->easiness < easiest->easiness)
-			easiest = tmp_from;
-		if (easiest->easiness <= 1)
+		tmp_from->brother = get_brother(*stacks.sa, tmp_from->n);
+		tmp_from->cost = abs(tmp_from->dist) + abs(tmp_from->brother->dist) + (max - tmp_from->n);
+		if (!cheapest || tmp_from->cost < cheapest->cost)
+			cheapest = tmp_from;
+		if (cheapest->cost <= 1)
 			break ;
 		tmp_from = tmp_from->next;
 	}
-	move_to_top(stacks.sb, easiest, 'b', result);
-	move_to_top(stacks.sa, easiest->brother, 'a', result);
+	move_to_top(stacks.sb, cheapest, 'b', result);
+	move_to_top(stacks.sa, cheapest->brother, 'a', result);
 	push(stacks.sb, stacks.sa, 'a', result);
-	reset_distances(*(stacks.sa));
+	reset_distances(*stacks.sa);
 }
 
 void	adjust(t_list **stack_a, int *sorted_arr, char **result)

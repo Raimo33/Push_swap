@@ -1,6 +1,7 @@
 srcs/a.out
 srcs/mandatory/r
 srcs/.vscode/
+.vscode/
 srcs/bonus/a.out
 srcs/mandatory/a.out
 push_swap

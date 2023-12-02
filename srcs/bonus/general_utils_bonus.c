@@ -57,7 +57,7 @@ long	f_atol(char *nptr)
 		n += (*nptr - 48);
 		nptr++;
 	}
-	if (n * sign > INT_MAX || n * sign < INT_MIN)
+	if (*nptr != '\0' || n * sign > INT_MAX || n * sign < INT_MIN)
 		error(2);
 	return (n * sign);
 }

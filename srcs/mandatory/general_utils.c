@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/30 15:30:49 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 10:22:38 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ long	f_atol(char *nptr)
 		n += (*nptr - 48);
 		nptr++;
 	}
-	if (n * sign > INT_MAX || n * sign < INT_MIN)
+	if (*nptr != '\0' || n * sign > INT_MAX || n * sign < INT_MIN)
 		error(2);
 	return (n * sign);
 }

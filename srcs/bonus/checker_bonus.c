@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:31:26 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/01 17:03:25 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 10:28:22 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,9 @@ static void	make_move(t_stacks stacks, char **ln)
 
 static void	check_sorting(t_list *stack_a, t_list *stack_b)
 {
-	if (stack_b)
-	{
-		write(1, "KO\n", 3);
-		return ;
-	}
 	while (stack_a->next)
 	{
-		if (stack_a->n > stack_a->next->n)
+		if (stack_a->n > stack_a->next->n || stack_b)
 		{
 			write(1, "KO\n", 3);
 			return ;

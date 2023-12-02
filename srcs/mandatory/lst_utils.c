@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:13:32 by craimond          #+#    #+#             */
-/*   Updated: 2023/11/30 18:16:00 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:21:49 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_list	*f_lstnew(int n)
 		return (NULL);
 	new_node->n = n;
 	new_node->dist = 0;
-	new_node->easiness = SHRT_MAX;
+	new_node->dist_max = 0;
+	new_node->cost = SHRT_MAX;
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -59,17 +60,20 @@ void	reset_distances(t_list *stack)
 {
 	short	size;
 	short	i;
+	short	half;
 
 	i = 0;
 	size = lst_len(stack);
-	while (stack && i < size / 2)
+	half = size / 2 + size % 2;
+	while (stack && i < half)
 	{
 		stack->dist = i++;
 		stack = stack->next;
 	}
-	while (stack && i > 0)
+	i += size % 2;
+	while (stack && --i > 0)
 	{
-		stack->dist = -(i--);
+		stack->dist = -i;
 		stack = stack->next;
 	}
 }
