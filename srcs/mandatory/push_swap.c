@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 14:41:43 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:21:13 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ unsigned short size)
 
 	first = (*stacks.sa)->n;
 	second = (*stacks.sa)->next->n;
-	if (size == 2 && first > second)
-		write(1, "sa\n", 3);
-	else if (size == 3)
+	if (size == 2)
+		if (first > second)
+			write(1, "sa\n", 3);
+	if (size == 3)
 		handle_three(stacks.sa, 'a', result);
 	else
 	{

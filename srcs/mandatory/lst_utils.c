@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:13:32 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 14:39:38 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:20:48 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_list	*f_lstnew(int n)
 		return (NULL);
 	new_node->n = n;
 	new_node->dist = 0;
-	new_node->dist_max = 0;
 	new_node->cost = SHRT_MAX;
 	new_node->next = NULL;
 	return (new_node);

@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 18:45:17 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:20:40 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct s_list
 {
 	int				n;
 	short			dist;
-	short			dist_max;
 	short			cost;
 	struct s_list	*brother;
 	struct s_list	*next;
