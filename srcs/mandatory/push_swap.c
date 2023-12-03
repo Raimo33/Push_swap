@@ -6,20 +6,11 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 19:22:18 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 14:41:43 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-// #include "a_to_b.c"
-// #include "b_to_a.c"
-// #include "general_utils.c"
-// #include "lst_utils.c"
-// #include "display.c"
-// #include "stack_operations.c"
-// #include "macros.c"
-// int	main2(int argc, char **argv);
 
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
 static char	check_duplicates(int *sorted_arr, short size);
@@ -27,12 +18,6 @@ static void	free_everything(char id, t_stacks stacks, int *sorted_arr,
 				char *result);
 static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
 				unsigned short size);
-
-// int main(void)
-// {
-//     char *numbers[] = {"push_swap", "3", "-4", "10", "0", "99", "-33", "-42", "7", "-8", "21", "19", "41", "111"};
-//     main2(13, numbers);
-// }
 
 int	main(int argc, char **argv)
 {
