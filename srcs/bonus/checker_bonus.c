@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:31:26 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 10:28:22 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:33:45 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,25 @@ int	main(int argc, char **argv)
 	int			*sorted_arr;
 	char		*ln;
 
-	if (argc < 3)
+	argv = handle_split(&argc, argv);
+	if (argc <= 2)
 	{
 		if (argv[1])
 			f_atol(argv[1]);
 		return (0);
 	}
-	sorted_arr = malloc(sizeof(int) * (argc - 1));
-	stacks.sa = malloc(sizeof(t_list *));
-	stacks.sb = malloc(sizeof(t_list *));
-	*(stacks.sa) = 0;
-	*(stacks.sb) = 0;
+	sorted_arr = ft_calloc(argc - 1, sizeof(int));
+	stacks.sa = ft_calloc(1, sizeof(t_list *));
+	stacks.sb = ft_calloc(1, sizeof(t_list *));
 	if (!stacks.sa || !stacks.sb || !sorted_arr)
-		free_everything(1, stacks, sorted_arr);
+		error(1);
 	init(argc, &sorted_arr, argv, stacks.sa);
 	check_duplicates(sorted_arr, argc - 1);
 	ln = get_next_line(0);
 	while (ln)
 		make_move(stacks, &ln);
 	check_sorting(*stacks.sa, *stacks.sb);
-	f_lstclear(stacks.sa);
-	free_everything(0, stacks, sorted_arr);
+	free_everything(stacks, sorted_arr, argv);
 }
 
 static void	make_move(t_stacks stacks, char **ln)

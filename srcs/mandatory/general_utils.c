@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 16:26:14 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:39:20 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ long	f_atol(char *nptr)
 		n += (*nptr - 48);
 		nptr++;
 	}
-	if (*nptr != '\0' || n * sign > INT_MAX || n * sign < INT_MIN)
+	n = (-n) * (sign == '-') + (n) * (sign != '-');
+	if (*nptr != '\0' || n > INT_MAX || n < INT_MIN)
 		error(2);
-	return ((-n) * (sign == '-') + (n) * (sign != '-'));
+	return (n);
 }
 
 void	quicksort(int arr[], int low, int high)

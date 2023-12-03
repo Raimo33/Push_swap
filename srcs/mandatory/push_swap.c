@@ -6,18 +6,30 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 17:21:13 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:22:19 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+// #include "a_to_b.c"
+// #include "b_to_a.c"
+// #include "display.c"
+// #include "stack_operations.c"
+// #include "macros.c"
+// #include "general_utils.c"
+
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
 static char	check_duplicates(int *sorted_arr, short size);
-static void	free_everything(char id, t_stacks stacks, int *sorted_arr,
-				char *result);
+static void	free_everything(t_stacks stacks, int *sorted_arr,
+	char *result, char **argv);
 static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
 				unsigned short size);
+
+// int	main(void)
+// {
+// 	main2(4, (char *[]){"./push_swap", "2147483645", "2147483646", "2147483647"});
+// }
 
 int	main(int argc, char **argv)
 {
@@ -25,26 +37,24 @@ int	main(int argc, char **argv)
 	int			*sorted_arr;
 	char		*result;
 
-	if (argc < 3)
+	argv = handle_split(&argc, argv);
+	if (argc <= 2)
 	{
 		if (argv[1])
 			f_atol(argv[1]);
 		return (0);
 	}
 	result = ft_calloc(N_MOVES, sizeof(char));
-	sorted_arr = malloc(sizeof(int) * (argc - 1));
-	stacks.sa = malloc(sizeof(t_list *));
-	stacks.sb = malloc(sizeof(t_list *));
-	*stacks.sa = 0;
-	*stacks.sb = 0;
+	sorted_arr = ft_calloc(argc - 1, sizeof(int));
+	stacks.sa = ft_calloc(1, sizeof(t_list *));
+	stacks.sb = ft_calloc(1, sizeof(t_list *));
 	if (!result++ || !stacks.sa || !stacks.sb || !sorted_arr)
-		free_everything(1, stacks, sorted_arr, result - 1);
+		error(1);
 	init(argc, &sorted_arr, argv, stacks.sa);
 	if (check_duplicates(sorted_arr, argc - 1))
 		handle_cases(stacks, sorted_arr, &result, argc - 1);
 	merge_moves(&result);
-	f_lstclear(stacks.sa);
-	free_everything(0, stacks, sorted_arr, result - 1);
+	free_everything(stacks, sorted_arr, result - 1, argv);
 }
 
 static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
@@ -56,12 +66,11 @@ unsigned short size)
 
 	first = (*stacks.sa)->n;
 	second = (*stacks.sa)->next->n;
-	if (size == 2)
-		if (first > second)
-			write(1, "sa\n", 3);
-	if (size == 3)
+	if (size == 2 && first > second)
+		write(1, "sa\n", 3);
+	else if (size == 3)
 		handle_three(stacks.sa, 'a', result);
-	else
+	else if (size > 3)
 	{
 		third = (*stacks.sa)->next->next->n;
 		if (is_sorted(*stacks.sa, sorted_arr) == 0)
@@ -103,13 +112,14 @@ static char	check_duplicates(int *sorted_arr, short size)
 	return (1);
 }
 
-static void	free_everything(char id, t_stacks stacks, int *sorted_arr,
-	char *result)
+static void	free_everything(t_stacks stacks, int *sorted_arr,
+	char *result, char **argv)
 {
+	f_lstclear(stacks.sa);
 	free(stacks.sa);
 	free(stacks.sb);
 	free(sorted_arr);
 	free(result);
-	if (id != 0)
-		error(id);
+	//fare un check per capire se e' stata allocata dinamicamente o staticamente
+	free_matrix(argv);
 }

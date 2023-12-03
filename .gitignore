@@ -1,4 +1,6 @@
 srcs/a.out
+srcs/mandatory/*.o
+srcs/bonus/*.o
 srcs/mandatory/r
 srcs/.vscode/
 .vscode/

@@ -6,19 +6,19 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:57:21 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/01 16:53:59 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:08:53 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_bonus.h"
 
-void	free_everything(char id, t_stacks stacks, int *sorted_arr)
+void	free_everything(t_stacks stacks, int *sorted_arr, char **argv)
 {
+	f_lstclear(stacks.sa);
 	free(stacks.sa);
 	free(stacks.sb);
 	free(sorted_arr);
-	if (id != 0)
-		error(id);
+	free_matrix(argv);
 }
 
 char	scmp(char *s1, char *s2)

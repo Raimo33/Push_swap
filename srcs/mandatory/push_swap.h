@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:28:51 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 17:20:40 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:26:55 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ struct s_keynbrs
 	int	n2;
 };
 
+char			**handle_split(int *argc, char **argv);
+char			**free_matrix(char **str_array);
 char			is_sorted(t_list *stack, int *sorted_arr);
 void			divide_into_chunks(t_stacks stacks, int *sorted_arr,
 					char **result, unsigned short size);
