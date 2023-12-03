@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/02 10:22:38 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:26:14 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,10 @@ long	f_atol(char *nptr)
 	char	sign;
 
 	n = 0;
-	sign = 1;
 	while (*nptr == 32 || (*nptr >= '\t' && *nptr <= '\r'))
 		nptr++;
-	if (*nptr == '-')
-	{
-		sign = -1;
-		nptr++;
-	}
-	else if (*nptr == '+')
+	sign = nptr[0];
+	if (*nptr == '-' || *nptr == '+')
 		nptr++;
 	if (*nptr > '9' || *nptr < '0')
 		error(2);
@@ -66,7 +61,7 @@ long	f_atol(char *nptr)
 	}
 	if (*nptr != '\0' || n * sign > INT_MAX || n * sign < INT_MIN)
 		error(2);
-	return (n * sign);
+	return ((-n) * (sign == '-') + (n) * (sign != '-'));
 }
 
 void	quicksort(int arr[], int low, int high)
