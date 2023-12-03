@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:31:23 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 19:26:15 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:45:34 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char	rev_rotate(t_list **stack);
 char	push(t_list **stack_from, t_list **stack_to);
 char	swap(t_list **stack);
 char	**handle_split(int *argc, char **argv);
-char	**free_matrix(char **str_array);
+char	*ft_strdup(char *s);
+void	free_matrix(char **matrix);
 void	quicksort(int arr[], int low, int high);
 void	free_everything(t_stacks stacks, int *sorted_arr, char **argv);
 char	scmp(char *s1, char *s2);

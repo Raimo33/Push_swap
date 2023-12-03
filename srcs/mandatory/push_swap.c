@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 19:22:19 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 21:06:33 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 // #include "stack_operations.c"
 // #include "macros.c"
 // #include "general_utils.c"
+// #include "split_utils.c"
+// #include "split.c"
+// #include "lst_utils.c"
+// int	main2(int argc, char **argv);
 
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
 static char	check_duplicates(int *sorted_arr, short size);
@@ -28,7 +32,7 @@ static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
 
 // int	main(void)
 // {
-// 	main2(4, (char *[]){"./push_swap", "2147483645", "2147483646", "2147483647"});
+// 	main2(2, (char *[]){"./push_swap", "2 -10 8 3 111 0 5252 42 1244 89 55"});
 // }
 
 int	main(int argc, char **argv)
@@ -91,9 +95,12 @@ static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a)
 	t_list	*new_node;
 	int		i;
 
-	i = 0;
-	while (++i < argc)
+	i = 1;
+	while (argv[i])
+	{
 		(*sorted_arr)[i - 1] = f_atol(argv[i]);
+		i++;
+	}
 	while (--i > 0)
 	{
 		new_node = f_lstnew((*sorted_arr)[i - 1]);
@@ -120,6 +127,5 @@ static void	free_everything(t_stacks stacks, int *sorted_arr,
 	free(stacks.sb);
 	free(sorted_arr);
 	free(result);
-	//fare un check per capire se e' stata allocata dinamicamente o staticamente
 	free_matrix(argv);
 }

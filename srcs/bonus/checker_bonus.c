@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:31:26 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 19:33:45 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:48:25 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	main(int argc, char **argv)
 			f_atol(argv[1]);
 		return (0);
 	}
-	sorted_arr = ft_calloc(argc - 1, sizeof(int));
-	stacks.sa = ft_calloc(1, sizeof(t_list *));
-	stacks.sb = ft_calloc(1, sizeof(t_list *));
+	sorted_arr = (int *)ft_calloc(argc - 1, sizeof(int));
+	stacks.sa = (t_list **)ft_calloc(1, sizeof(t_list *));
+	stacks.sb = (t_list **)ft_calloc(1, sizeof(t_list *));
 	if (!stacks.sa || !stacks.sb || !sorted_arr)
 		error(1);
 	init(argc, &sorted_arr, argv, stacks.sa);
