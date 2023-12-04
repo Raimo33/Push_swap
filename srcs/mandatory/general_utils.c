@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:20:12 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 17:39:20 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:12:38 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ long	f_atol(char *nptr)
 		nptr++;
 	if (*nptr > '9' || *nptr < '0')
 		error(2);
-	while (*nptr <= '9' && *nptr >= '0')
+	while (*nptr != '\0' && *nptr <= '9' && *nptr >= '0')
 	{
 		n *= 10;
 		n += (*nptr - 48);

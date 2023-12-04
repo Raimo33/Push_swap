@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:26:27 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 21:06:33 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:17:09 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 static void	init(int argc, int **sorted_arr, char **argv, t_list **stack_a);
 static char	check_duplicates(int *sorted_arr, short size);
 static void	free_everything(t_stacks stacks, int *sorted_arr,
-	char *result, char **argv);
+				char *result, char **argv);
 static void	handle_cases(t_stacks stacks, int *sorted_arr, char **result,
 				unsigned short size);
 

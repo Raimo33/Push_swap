@@ -39,27 +39,23 @@ long	f_atol(char *nptr)
 	char	sign;
 
 	n = 0;
-	sign = 1;
 	while (*nptr == 32 || (*nptr >= '\t' && *nptr <= '\r'))
 		nptr++;
-	if (*nptr == '-')
-	{
-		sign = -1;
-		nptr++;
-	}
-	else if (*nptr == '+')
+	sign = nptr[0];
+	if (*nptr == '-' || *nptr == '+')
 		nptr++;
 	if (*nptr > '9' || *nptr < '0')
 		error(2);
-	while (*nptr <= '9' && *nptr >= '0')
+	while (*nptr != '\0' && *nptr <= '9' && *nptr >= '0')
 	{
 		n *= 10;
 		n += (*nptr - 48);
 		nptr++;
 	}
-	if (*nptr != '\0' || n * sign > INT_MAX || n * sign < INT_MIN)
+	n = (-n) * (sign == '-') + (n) * (sign != '-');
+	if (*nptr != '\0' || n > INT_MAX || n < INT_MIN)
 		error(2);
-	return (n * sign);
+	return (n);
 }
 
 void	error(char id)

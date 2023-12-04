@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 17:50:15 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 21:02:47 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:17:57 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@ static char		**fill_matrix(int n_words, char *s, char c, char **str_array);
 
 char	**handle_split(int *argc, char **argv)
 {
-	int 	i;
+	int		i;
 	char	**new_argv;
-	
+
 	i = -1;
 	if (*argc == 2)
 	{
 		*argc = count_words(argv[1], ' ') + 1;
-		return (f_split(argv[1], ' '));
+		new_argv = f_split(argv[1], ' ');
+		if (!new_argv[0])
+			error(2);
 	}
 	else
 	{
@@ -33,8 +35,8 @@ char	**handle_split(int *argc, char **argv)
 		while (++i < *argc)
 			new_argv[i] = ft_strdup(argv[i]);
 		new_argv[i] = NULL;
-		return (new_argv);
 	}
+	return (new_argv);
 }
 
 static char	**f_split(char *s, char c)
@@ -59,7 +61,7 @@ static char	**f_split(char *s, char c)
 
 static int	count_words(char *s, char c)
 {
-	int	 	n_words;
+	int		n_words;
 	short	i;
 
 	i = -1;

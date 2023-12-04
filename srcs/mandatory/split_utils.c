@@ -6,7 +6,7 @@
 /*   By: craimond <craimond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 19:40:25 by craimond          #+#    #+#             */
-/*   Updated: 2023/12/03 20:14:19 by craimond         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:17:23 by craimond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,3 @@ static size_t	ft_strlen(const char *c)
 		n++;
 	return (n);
 }
-
